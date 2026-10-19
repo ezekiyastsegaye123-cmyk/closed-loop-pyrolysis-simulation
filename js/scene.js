@@ -4,7 +4,7 @@
  * dynamic thermal glow shaders, cutaway transparency, and structural framing.
  */
 
-import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+import * as THREE from 'three';
 
 export class Plant3DScene {
   constructor(container) {

@@ -6,7 +6,7 @@
  * - DPR mobile capping & 60fps performance optimization
  */
 
-import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+import * as THREE from 'three';
 import { PyrolysisSimulationModel } from './simulation.js';
 import { Plant3DScene } from './scene.js';
 import { ProcessParticleStreams } from './particles.js';

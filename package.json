@@ -1,0 +1,27 @@
+{
+  "name": "project-num2",
+  "version": "1.0.0",
+  "description": "A computational verification and numerical simulation framework implementing the mathematical formulation in: > **Reference Document**: *Integrated Theoretical Framework for Byproduct Reintegration in Closed-Loop Pyrolysis Systems* (Ezekiyas Tsegaye, 2026)",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ezekiyastsegaye123-cmyk/closed-loop-pyrolysis-simulation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ezekiyastsegaye123-cmyk/closed-loop-pyrolysis-simulation/issues"
+  },
+  "homepage": "https://github.com/ezekiyastsegaye123-cmyk/closed-loop-pyrolysis-simulation#readme",
+  "dependencies": {
+    "three": "^0.186.1"
+  }
+}
