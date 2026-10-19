@@ -70,8 +70,24 @@ python3 -m pyrolysis_sim.main --feed-rate 1000 --setpoint-temp 500 --duration 60
 python3 -m pytest tests/
 ```
 
+### 4. Running the 3D Interactive Web Simulation
+Launch the high-fidelity 3D Digital Twin experience in your browser:
+```bash
+python3 -m http.server 8000
+```
+Then navigate to: `http://localhost:8000`
+
+#### 3D Experience Features:
+- **Interactive 3D Digital Twin**: Continuous fast pyrolysis reactor, 800 °C solid ash combustor & reheater, twin screw biomass feeder, primary cyclone, secondary catalytic char bed, and fractional bio-oil condensation train.
+- **Dynamic Process Particle FX**: Real-time particle streams visualizing the recirculating solid heat carrier (ash), biomass injection, fluidized bubbling bed, pyrolysis vapors, syngas recirculation loop, and bio-oil collection.
+- **Live Engineering HUD & Telemetry**: Real-time temperature pyrometer, chemical yield distribution (bio-oil, biochar, syngas), autothermal energy balance (+4.39 GJ surplus), and system thermal efficiency (73.6%).
+- **Interactive Controls**: Modulate biomass feed rate, reactor setpoint temperature, combustor temperature, syngas ratio, and toggle in situ catalytic cracking and automatic vs manual PID+Fuzzy control.
+- **Camera Views & Modes**: Preset camera views, Cutaway / X-Ray transparency mode, and thermal false-color heatmap view.
+- **Data Export**: Direct in-browser export to time-series CSV and verification markdown reports.
+
 ---
 
 ## License
 
 MIT License. See LICENSE for details.
+
