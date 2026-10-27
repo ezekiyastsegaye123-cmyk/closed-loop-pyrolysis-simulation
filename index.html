@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚗️</text></svg>">
 </head>
-<body>
+<body class="landing-mode">
 
   <!-- WebGL Fallback Screen (for browsers/devices without WebGL) -->
   <div id="webgl-fallback">
@@ -58,51 +58,87 @@
     <div class="header-status-group">
       <div class="status-badge">
         <span class="pulse-dot"></span>
-        <span>AUTOTHERMAL ACTIVE (+4.39 GJ)</span>
+        <span>AUTOTHERMAL (+4.39 GJ)</span>
       </div>
-      <button id="btn-start-tour" class="btn-ctrl btn-tour-pulse" title="Interactive step-by-step walkthrough">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-        Take Guided Tour
+      <button id="btn-start-tour" class="btn-ctrl btn-tour-pulse" title="Interactive step-by-step walkthrough for newcomers (Key: T)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        Newcomer Tour
       </button>
-      <button id="btn-open-guide" class="btn-ctrl" title="Open complete project & materials handbook">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        Project & Materials Guide
+      <button id="btn-toggle-hud" class="btn-ctrl" title="Toggle Clean Focus View vs Full Control Room (Key: F)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="3"/></svg>
+        <span id="toggle-hud-text">Focus View</span>
       </button>
-      <button id="btn-download-report" class="btn-ctrl">
+      <button id="btn-open-guide" class="btn-ctrl" title="Open complete project & materials handbook (Key: G)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Materials Guide
+      </button>
+      <button id="btn-download-report" class="btn-ctrl" title="Download mathematical verification report">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Verification Report
+        Report
       </button>
-      <button id="btn-export-csv" class="btn-ctrl">
+      <button id="btn-export-csv" class="btn-ctrl" title="Export time-series telemetry data">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        Export CSV
+        CSV
       </button>
     </div>
   </header>
 
-  <!-- Welcome Onboarding Floating Banner -->
-  <div id="welcome-banner" class="glass-panel">
-    <div class="welcome-content">
-      <div class="welcome-badge">
+  <!-- Newcomer Landing Page Hero Overlay -->
+  <div id="landing-hero-overlay" class="landing-hero-backdrop">
+    <div class="landing-hero-card glass-panel">
+      <button id="btn-landing-close" class="banner-close-btn" title="Skip to Dashboard" aria-label="Close landing overlay">&times;</button>
+      
+      <div class="landing-tag-row">
         <span class="pulse-dot"></span>
-        <span>WELCOME TO CLOSED-LOOP PYROLYSIS</span>
+        <span class="landing-tag-text">EZEKIYAS TSEGAYE (2026) · 3D COMPUTATIONAL DIGITAL TWIN</span>
       </div>
-      <h2 class="welcome-title">Transforming Waste Biomass into Biofuels with Zero External Fuel</h2>
-      <p class="welcome-desc">
-        This interactive 3D digital twin simulates continuous fast pyrolysis coupled with closed-loop byproduct reintegration (Ezekiyas Tsegaye, 2026). Discover how recirculating 800 °C solid ash and syngas deoxygenation creates a completely self-sustaining (+4.39 GJ surplus) biorefinery!
+
+      <h1 class="landing-main-title">Closed-Loop Pyrolysis Systems</h1>
+      <p class="landing-main-subtitle">Zero-Emission Autothermal Biorefinery & Byproduct Reintegration</p>
+
+      <p class="landing-main-desc">
+        Welcome to the next generation of renewable biofuel refining. While conventional fast pyrolysis burns huge amounts of external fossil fuel and yields acidic, tar-heavy oil, this closed-loop biorefinery eliminates external fuel completely. By recirculating <strong>800 °C solid ash heat carriers</strong> and byproduct <strong>reducing syngas</strong>, it produces high-calorific liquid fuels with an autothermal <strong>+4.39 GJ/h net energy surplus</strong>.
       </p>
-      <div class="welcome-actions">
-        <button id="btn-welcome-tour" class="btn-ctrl btn-tour-pulse">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-          Take the 2-Minute Guided Tour
+
+      <!-- Key Value Callouts -->
+      <div class="landing-metrics-grid">
+        <div class="landing-metric-box">
+          <div class="landing-metric-icon">⚡</div>
+          <div class="landing-metric-title">+4,390 MJ/h Surplus</div>
+          <div class="landing-metric-desc">100% autothermal operation powers endothermic reactor bed with zero fossil fuel</div>
+        </div>
+        <div class="landing-metric-box">
+          <div class="landing-metric-icon">🌿</div>
+          <div class="landing-metric-title">In-Situ Tar Cracking</div>
+          <div class="landing-metric-desc">Active biochar AAEM minerals crack polycyclic tars directly in the vapor phase</div>
+        </div>
+        <div class="landing-metric-box">
+          <div class="landing-metric-icon">⛽</div>
+          <div class="landing-metric-title">28.2 MJ/kg Bio-Oil</div>
+          <div class="landing-metric-desc">Recycled syngas HDO loop prevents secondary polymerization and oil acidity</div>
+        </div>
+      </div>
+
+      <!-- Action CTAs -->
+      <div class="landing-cta-row">
+        <button id="btn-landing-tour" class="btn-ctrl btn-landing-primary btn-tour-pulse">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          Start Newcomer Tour (Show One by One)
         </button>
-        <button id="btn-welcome-guide" class="btn-ctrl">
+        <button id="btn-landing-dashboard" class="btn-ctrl btn-landing-secondary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Enter Full Control Room
+        </button>
+        <button id="btn-landing-guide" class="btn-ctrl btn-ghost">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          System & Materials Guide
+          Process Handbook
         </button>
-        <button id="btn-welcome-dismiss" class="btn-ctrl btn-ghost">Explore Freely</button>
+      </div>
+
+      <div class="landing-sub-tip">
+        <span>💡 First time here? The <strong>Newcomer Tour</strong> flies to each machine one-by-one with clean, focused explanations.</span>
       </div>
     </div>
-    <button id="btn-welcome-close" class="banner-close-btn" aria-label="Close welcome banner">&times;</button>
   </div>
 
   <!-- Key Performance Indicators (KPI) Top Bar -->
@@ -398,6 +434,7 @@
     <div class="tour-footer">
       <div class="tour-dots" id="tour-dots"></div>
       <div class="tour-nav-buttons">
+        <button id="btn-tour-skip" class="btn-ctrl btn-ghost" style="font-size: 11px;" title="Jump directly to full control room">Skip to Dashboard</button>
         <button id="btn-tour-prev" class="btn-ctrl" disabled>&larr; Back</button>
         <button id="btn-tour-next" class="btn-ctrl btn-tour-pulse">Next Stage &rarr;</button>
       </div>

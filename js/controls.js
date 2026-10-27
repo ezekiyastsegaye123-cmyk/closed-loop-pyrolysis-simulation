@@ -44,7 +44,19 @@ export class SceneControls {
     this.controls.maxDistance = 60.0;
     this.controls.maxPolarAngle = Math.PI / 2 - 0.02; // Prevent going beneath ground pad
     this.controls.target.set(1, 6, -1);
+    this.controls.autoRotate = true; // Ambient cinematic rotation on initial landing
+    this.controls.autoRotateSpeed = 0.35;
+    this.controls.addEventListener('start', () => {
+      this.controls.autoRotate = false;
+    });
     this.controls.update();
+  }
+
+  setAutoRotate(enabled, speed = 0.35) {
+    if (this.controls) {
+      this.controls.autoRotate = enabled;
+      this.controls.autoRotateSpeed = speed;
+    }
   }
 
   initRaycasting() {

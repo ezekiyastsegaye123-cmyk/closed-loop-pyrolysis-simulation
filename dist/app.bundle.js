@@ -32307,7 +32307,18 @@ void main() {
           this.controls.maxDistance = 60;
           this.controls.maxPolarAngle = Math.PI / 2 - 0.02;
           this.controls.target.set(1, 6, -1);
+          this.controls.autoRotate = true;
+          this.controls.autoRotateSpeed = 0.35;
+          this.controls.addEventListener("start", () => {
+            this.controls.autoRotate = false;
+          });
           this.controls.update();
+        }
+        setAutoRotate(enabled, speed = 0.35) {
+          if (this.controls) {
+            this.controls.autoRotate = enabled;
+            this.controls.autoRotateSpeed = speed;
+          }
         }
         initRaycasting() {
           const canvas = this.renderer.domElement;
@@ -32592,80 +32603,87 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
           this.btnTourPrev = document.getElementById("btn-tour-prev");
           this.btnTourNext = document.getElementById("btn-tour-next");
           this.btnTourClose = document.getElementById("btn-tour-close");
+          this.btnTourSkip = document.getElementById("btn-tour-skip");
           this.guideModal = document.getElementById("guide-modal");
           this.guideBackdrop = document.getElementById("guide-backdrop");
           this.btnGuideClose = document.getElementById("btn-guide-close");
-          this.welcomeBanner = document.getElementById("welcome-banner");
+          this.landingOverlay = document.getElementById("landing-hero-overlay");
+          this.btnLandingTour = document.getElementById("btn-landing-tour");
+          this.btnLandingDashboard = document.getElementById("btn-landing-dashboard");
+          this.btnLandingGuide = document.getElementById("btn-landing-guide");
+          this.btnLandingClose = document.getElementById("btn-landing-close");
+          this.btnToggleHud = document.getElementById("btn-toggle-hud");
+          this.toggleHudText = document.getElementById("toggle-hud-text");
           this.tourSteps = [
             {
               id: "overview",
               preset: "overview",
-              badge: "STEP 1 OF 7 \xB7 OVERVIEW",
+              badge: "STAGE 1 OF 7 \xB7 THE ZERO-FOSSIL VISION",
               title: "Welcome to Closed-Loop Pyrolysis",
-              subtitle: "System Overview & Autothermal Innovation",
-              material: "Focus: 100% Closed-Loop Byproduct Reintegration",
-              content: "Welcome! Conventional fast pyrolysis requires burning huge amounts of external fossil fuel and generates acidic, tar-heavy crude bio-oil. This 3D digital twin models Ezekiyas Tsegaye's (2026) framework, where all process byproducts (solid ash heat, biochar catalyst, and syngas) are recycled back into the system to achieve 100% autothermal self-sufficiency (+4.39 GJ surplus) with zero fossil fuels!",
-              tip: '\u{1F4A1} Click "Next Stage" or press Right Arrow on your keyboard to tour each component!'
+              subtitle: "100% Autothermal Byproduct Reintegration",
+              material: "Core Concept: Complete Thermodynamic Self-Sufficiency",
+              content: "Welcome! Fast pyrolysis transforms renewable forestry and crop residue into high-energy liquid biofuels. Conventional plants consume huge volumes of fossil fuels and produce acidic, tarry oil. This computational twin models Ezekiyas Tsegaye's (2026) framework, where solid ash heat carriers and syngas deoxygenation eliminate external fuel and generate a +4.39 GJ/h net thermal surplus!",
+              tip: '\u{1F449} Click "Next Stage \u2192" or press Right Arrow on your keyboard to explore each machine one-by-one!'
             },
             {
               id: "feeder",
               preset: "feeder",
-              badge: "STEP 2 OF 7 \xB7 FEEDSTOCK",
-              title: "Stage 1: Biomass Metering & Feed Material",
-              subtitle: "Raw Renewable Hydrocarbon Input",
-              material: "Material: Dry Biomass (Cellulose 45%, Hemicellulose 30%, Lignin 25%)",
-              content: "The process starts with dry plant biomass (forestry wood chips, sawdust, or crop residue with <10% moisture and particles \u22642 mm). Dual variable-speed screw augers meter 1,000 kg/h continuously into the reactor while maintaining an airtight inert gas seal to exclude atmospheric oxygen.",
-              tip: "\u{1F4A1} Purpose of Biomass: Acts as the carbon-neutral source of organic biopolymers for thermochemical conversion into liquid biofuels."
+              badge: "STAGE 2 OF 7 \xB7 BIOMASS INGESTION",
+              title: "Biomass Feeder & Storage Hopper",
+              subtitle: "Continuous Airtight Polymer Ingestion",
+              material: "IN: Dry Biomass Chipping (<10% moisture) \xB7 OUT: 1,000 kg/h to Reactor Bed",
+              content: "Everything starts here. Dry wood chips or agricultural residues are metered continuously at 1,000 kg/h by dual variable-speed screw augers. An airtight rotary valve and nitrogen buffer seal prevent any atmospheric oxygen from leaking in, eliminating risk of premature combustion.",
+              tip: "\u{1F4A1} Notice the lime-green particle stream feeding directly into the reactor base!"
             },
             {
               id: "reactor",
               preset: "reactor",
-              badge: "STEP 3 OF 7 \xB7 REACTOR CORE",
-              title: "Stage 2: Fluidized Bed Fast Pyrolysis Reactor",
-              subtitle: "Rapid Thermal Cracking @ 500 \xB0C in <2 Seconds",
-              material: "Material: Fluidized Sand & Red-Hot Solid Ash Carrier (800 \xB0C)",
-              content: "Inside this oxygen-free vessel, falling biomass mixes with 800 \xB0C recirculating solid ash. Within 2 seconds, cellulose, hemicellulose, and lignin decompose under Semyonov kinetics into volatile primary bio-oil vapors, solid biochar, and syngas, requiring +1.0 MJ/kg of endothermic sensible heat.",
-              tip: "\u{1F4A1} Purpose of Reactor: Extremely rapid conductive heating (>1000 \xB0C/s) prevents charring and maximizes volatile bio-oil vapor yield."
+              badge: "STAGE 3 OF 7 \xB7 THERMAL CRACKING CORE",
+              title: "Fluidized Bed Pyrolysis Reactor",
+              subtitle: "Lightning-Fast Conductive Cracking @ 500 \xB0C (<2 Seconds)",
+              material: "IN: Biomass (1,000 kg/h) + Red-Hot Solid Ash (5,940 kg/h @ 800 \xB0C)",
+              content: "Inside this oxygen-free vessel, falling biomass contacts a bubbling fluidized bed of 800 \xB0C solid ash. In less than 2 seconds, biopolymers conductively crack into volatile bio-oil vapors, char, and syngas. The reaction requires +1.0 MJ/kg of sensible heat, provided entirely by the circulating solid ash with zero internal flame!",
+              tip: "\u{1F4A1} Observe the bubbling sand/ash bed and the yellow volatile vapors rising through the top pipe."
             },
             {
               id: "combustor",
               preset: "combustor",
-              badge: "STEP 4 OF 7 \xB7 HEAT CARRIER LOOP",
-              title: "Stage 3: Ash Combustor & Solid Heat Carrier Loop",
-              subtitle: "The Engine of Autothermal Operation (+4.39 GJ Surplus)",
-              material: "Material: 5,940 kg/h Solid Ash Carrier (800 \xB0C) & Byproduct Biochar",
-              content: "The core innovation: instead of burning fossil gas or electricity, this vessel burns 70% of the byproduct char and surplus syngas to reheat 5,940 kg/h of solid mineral ash back to 800 \xB0C. The hot ash flows through the upper riser into the reactor, delivering 1.69 GJ of sensible heat and driving auxiliary start-up fuel down to 0.0%!",
-              tip: "\u{1F4A1} Purpose of Ash Carrier: Acts as a continuous sensible heat sponge, replacing combustion tubes and eliminating heat-exchanger fouling."
+              badge: "STAGE 4 OF 7 \xB7 HEAT CARRIER ENGINE",
+              title: "Solid Ash Combustor & Reheater",
+              subtitle: "The Engine of Autothermal Operation (+4,390 MJ/h Surplus)",
+              material: "IN: Byproduct Biochar (154 kg/h) + Syngas \xB7 OUT: Reheated Ash (800 \xB0C)",
+              content: "This is the beating heart of the closed loop! Instead of purchasing natural gas or electricity, this vessel combusts 70% of the byproduct char and excess syngas. This combustion releases 3,388 MJ/h of heat, reheating 5,940 kg/h of circulating mineral ash back to 800 \xB0C before it returns through the riser. Auxiliary start-up fuel drops to 0.0%!",
+              tip: "\u{1F4A1} Notice the bright furnace glow and the hot ash flowing through the upper recirculating riser."
             },
             {
               id: "separation",
               preset: "separation",
-              badge: "STEP 5 OF 7 \xB7 CATALYTIC UPGRADING",
-              title: "Stage 4: Cyclone Separator & Catalytic Biochar Bed",
-              subtitle: "Cracking Heavy Tars with Active Char Minerals (AAEMs)",
-              material: "Material: Biochar with Inherent Alkali & Alkaline Earth Metals (AAEMs)",
-              content: "The primary cyclone separates 98.5% of entrained biochar from the vapor stream. The vapors then pass through a secondary hot biochar bed. Inherent alkali and alkaline earth metals (K, Ca, Mg) in the char act as a zero-cost catalyst, selectively cracking heavy polycyclic tars into light, high-value liquid fuels and preventing wax deposits.",
-              tip: "\u{1F4A1} Purpose of Biochar: Reheating fuel for the combustor (70%) and porous in-situ catalytic cracker for heavy tars (30%)."
+              badge: "STAGE 5 OF 7 \xB7 TAR CRACKING",
+              title: "Cyclone Separator & Catalytic Bed",
+              subtitle: "Tar Cracking with Active Char Minerals (AAEMs)",
+              material: "Catalyst: Porous Biochar with Inherent K, Ca, Mg Alkali Earth Metals",
+              content: "The primary cyclone spins out 98.5% of entrained biochar. The hot vapors then flow through a secondary bed of active biochar. Inherent alkali and alkaline earth metals (K, Ca, Mg) in the char act as a free in-situ catalyst, selectively cracking heavy polycyclic tars into light, high-octane liquid fuel vapors.",
+              tip: "\u{1F4A1} This prevents wax clogging and drastically lowers bio-oil viscosity and heavy tar content."
             },
             {
               id: "condenser",
               preset: "condenser",
-              badge: "STEP 6 OF 7 \xB7 CONDENSATION & PRODUCTS",
-              title: "Stage 5: Fractional Condensers & Syngas HDO Loop",
-              subtitle: "Capturing Stabilized Bio-Oil & Recycling Reducing Syngas",
-              material: "Material: Upgraded Bio-Oil (23.5%) & Recycled Syngas (H\u2082 / CO)",
-              content: "Pyrolysis vapors are rapidly quenched (<3s) across shell-and-tube coolers and an electrostatic precipitator, capturing premium stabilized bio-oil (23.5% yield). 50% of the non-condensable syngas (H\u2082/CO rich) is recycled into the reactor base to create an in-situ hydrodeoxygenation (HDO) atmosphere, stripping oxygen from vapors to prevent oil acidity.",
-              tip: "\u{1F4A1} Purpose of Syngas: Deoxygenates bio-oil for long-term shelf stability without buying expensive hydrogen gas."
+              badge: "STAGE 6 OF 7 \xB7 LIQUID PRODUCT QUENCH",
+              title: "Fractional Condensers & Bio-Oil Train",
+              subtitle: "Ultra-Rapid Quench (<3 Seconds) & Product Recovery",
+              material: "OUT: 235 kg/h Upgraded Bio-Oil (23.5% yield, 28.2 MJ/kg) + Clean Syngas",
+              content: "The upgraded vapors pass through multi-stage shell-and-tube coolers and an electrostatic precipitator, chilling in under 3 seconds to freeze repolymerization. This captures 235 kg/h of premium stabilized bio-oil, visible as dripping green droplets falling into the collection receiver tank below.",
+              tip: "\u{1F4A1} Watch the green bio-oil droplets condensing into the product receiver tank."
             },
             {
               id: "ready",
               preset: "overview",
-              badge: "STEP 7 OF 7 \xB7 CONTROLS & EXPERIMENTS",
-              title: "Stage 6: You're Ready to Explore & Experiment!",
-              subtitle: "How to Interact with the Digital Twin",
-              material: "Controls: Sliders, Preset Cameras, X-Ray & Data Exports",
-              content: "You now know the entire closed loop! Click & drag anywhere in 3D to rotate, right-click to pan, and click any vessel to inspect formulas. Use the right sidebar sliders to modulate Feed Rate, Setpoints, and Syngas Ratio. Toggle Char Catalysis or test Manual Burner Control to watch real-time chemical responses!",
-              tip: '\u{1F4A1} Click "Project & Materials Guide" in the top header at any time for the full technical handbook!'
+              badge: "STAGE 7 OF 7 \xB7 CONTROL ROOM ONLINE",
+              title: "You're Ready to Take the Helm!",
+              subtitle: "All Systems Integrated \xB7 Control Room Ready",
+              material: "Role: Live Supervisory Control & Parametric Optimization",
+              content: "50% of the non-condensable syngas (H\u2082/CO rich) is recycled into the reactor base to provide a reducing hydrodeoxygenation (HDO) atmosphere, boosting long-term shelf stability. You now understand every machine and material in this closed loop! Click below to enter the full control room, modulate sliders, and run live experiments.",
+              tip: '\u{1F680} Click "Enter Control Room Dashboard" below to reveal all interactive sliders, gauges, and telemetry!'
             }
           ];
           this.currentTourStep = 0;
@@ -32675,21 +32693,45 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
             this.tourSteps.forEach((_, idx) => {
               const dot = document.createElement("div");
               dot.className = `tour-dot ${idx === 0 ? "active" : ""}`;
-              dot.setAttribute("title", `Go to Step ${idx + 1}`);
+              dot.setAttribute("title", `Go to Stage ${idx + 1}`);
               dot.addEventListener("click", () => this.goToTourStep(idx));
               this.tourDotsContainer.appendChild(dot);
             });
           }
           const btnStartTour = document.getElementById("btn-start-tour");
-          const btnWelcomeTour = document.getElementById("btn-welcome-tour");
           const btnGuideStartTour = document.getElementById("btn-guide-start-tour");
-          [btnStartTour, btnWelcomeTour, btnGuideStartTour].forEach((btn) => {
+          [btnStartTour, btnGuideStartTour].forEach((btn) => {
             if (btn) btn.addEventListener("click", () => {
               this.closeGuide();
-              this.dismissWelcomeBanner();
               this.startTour();
             });
           });
+          if (this.btnLandingTour) {
+            this.btnLandingTour.addEventListener("click", () => {
+              this.startTour();
+            });
+          }
+          if (this.btnLandingDashboard) {
+            this.btnLandingDashboard.addEventListener("click", () => {
+              this.enterDashboard();
+            });
+          }
+          if (this.btnLandingGuide) {
+            this.btnLandingGuide.addEventListener("click", () => {
+              this.closeLandingOverlay();
+              this.openGuide("tab-overview");
+            });
+          }
+          if (this.btnLandingClose) {
+            this.btnLandingClose.addEventListener("click", () => {
+              this.enterDashboard();
+            });
+          }
+          if (this.btnToggleHud) {
+            this.btnToggleHud.addEventListener("click", () => {
+              this.toggleFocusMode();
+            });
+          }
           if (this.btnTourNext) {
             this.btnTourNext.addEventListener("click", () => this.nextTourStep());
           }
@@ -32699,14 +32741,12 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
           if (this.btnTourClose) {
             this.btnTourClose.addEventListener("click", () => this.endTour());
           }
+          if (this.btnTourSkip) {
+            this.btnTourSkip.addEventListener("click", () => this.endTour());
+          }
           const btnOpenGuide = document.getElementById("btn-open-guide");
-          const btnWelcomeGuide = document.getElementById("btn-welcome-guide");
           const btnModalOpenGuide = document.getElementById("btn-modal-open-guide");
           if (btnOpenGuide) btnOpenGuide.addEventListener("click", () => this.openGuide("tab-overview"));
-          if (btnWelcomeGuide) btnWelcomeGuide.addEventListener("click", () => {
-            this.dismissWelcomeBanner();
-            this.openGuide("tab-overview");
-          });
           if (btnModalOpenGuide) btnModalOpenGuide.addEventListener("click", () => {
             if (this.modal) this.modal.classList.remove("open");
             this.openGuide("tab-materials");
@@ -32717,10 +32757,6 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
           if (this.guideBackdrop) {
             this.guideBackdrop.addEventListener("click", () => this.closeGuide());
           }
-          const btnWelcomeDismiss = document.getElementById("btn-welcome-dismiss");
-          const btnWelcomeClose = document.getElementById("btn-welcome-close");
-          if (btnWelcomeDismiss) btnWelcomeDismiss.addEventListener("click", () => this.dismissWelcomeBanner());
-          if (btnWelcomeClose) btnWelcomeClose.addEventListener("click", () => this.dismissWelcomeBanner());
           const tabBtns = document.querySelectorAll(".guide-tab-btn");
           tabBtns.forEach((btn) => {
             btn.addEventListener("click", () => {
@@ -32731,7 +32767,7 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
           const legendHeader = document.getElementById("legend-header-toggle");
           const materialsLegend = document.getElementById("materials-legend");
           if (legendHeader && materialsLegend) {
-            legendHeader.addEventListener("click", (e) => {
+            legendHeader.addEventListener("click", () => {
               materialsLegend.classList.toggle("collapsed");
               const toggleBtn = document.getElementById("btn-toggle-legend");
               if (toggleBtn) {
@@ -32770,6 +32806,8 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
               if (resetBtn) resetBtn.click();
             } else if (e.key === "t" || e.key === "T") {
               this.startTour();
+            } else if (e.key === "f" || e.key === "F") {
+              this.toggleFocusMode();
             } else if (e.key === "g" || e.key === "G") {
               if (this.guideModal && this.guideModal.style.display !== "none") {
                 this.closeGuide();
@@ -32786,7 +32824,11 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
               const partBtn = document.getElementById("btn-particles");
               if (partBtn) partBtn.click();
             } else if (e.key === "Escape") {
-              if (this.isTourActive) this.endTour();
+              if (this.isTourActive) {
+                this.endTour();
+              } else if (document.body.classList.contains("landing-mode")) {
+                this.enterDashboard();
+              }
               this.closeGuide();
               if (this.modal) this.modal.classList.remove("open");
             } else if (e.key >= "1" && e.key <= "6") {
@@ -32805,25 +32847,57 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
             }
           });
           try {
-            if (sessionStorage.getItem("pyrolysis_welcome_dismissed") && this.welcomeBanner) {
-              this.welcomeBanner.style.display = "none";
+            if (sessionStorage.getItem("pyrolysis_visited") === "true") {
+              document.body.classList.remove("landing-mode");
+              if (this.landingOverlay) this.landingOverlay.style.display = "none";
+              if (this.controls) this.controls.setAutoRotate(false);
+            } else {
+              document.body.classList.add("landing-mode");
+              if (this.controls) this.controls.setAutoRotate(true, 0.35);
             }
           } catch (e) {
           }
         }
-        dismissWelcomeBanner() {
-          if (this.welcomeBanner) {
-            this.welcomeBanner.classList.add("dismissed");
-            setTimeout(() => this.welcomeBanner.style.display = "none", 320);
-            try {
-              sessionStorage.setItem("pyrolysis_welcome_dismissed", "true");
-            } catch (e) {
-            }
+        enterDashboard() {
+          this.closeLandingOverlay();
+          document.body.classList.remove("landing-mode");
+          document.body.classList.remove("tour-mode");
+          document.body.classList.remove("focus-mode");
+          if (this.toggleHudText) this.toggleHudText.textContent = "Focus View";
+          if (this.controls) this.controls.setAutoRotate(false);
+          if (this.tourCard) this.tourCard.style.display = "none";
+          try {
+            sessionStorage.setItem("pyrolysis_visited", "true");
+          } catch (e) {
+          }
+        }
+        closeLandingOverlay() {
+          if (this.landingOverlay) {
+            this.landingOverlay.classList.add("dismissed");
+            setTimeout(() => {
+              if (this.landingOverlay) this.landingOverlay.style.display = "none";
+            }, 400);
+          }
+          try {
+            sessionStorage.setItem("pyrolysis_visited", "true");
+          } catch (e) {
+          }
+        }
+        toggleFocusMode() {
+          const isFocus = document.body.classList.toggle("focus-mode");
+          if (this.toggleHudText) {
+            this.toggleHudText.textContent = isFocus ? "Full Dashboard" : "Focus View";
           }
         }
         startTour() {
           this.isTourActive = true;
           this.currentTourStep = 0;
+          this.closeLandingOverlay();
+          document.body.classList.remove("landing-mode");
+          document.body.classList.remove("focus-mode");
+          document.body.classList.add("tour-mode");
+          if (this.toggleHudText) this.toggleHudText.textContent = "Full Dashboard";
+          if (this.controls) this.controls.setAutoRotate(false);
           if (this.tourCard) this.tourCard.style.display = "block";
           this.renderTourStep(0);
         }
@@ -32842,7 +32916,7 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
           if (this.btnTourPrev) this.btnTourPrev.disabled = idx === 0;
           if (this.btnTourNext) {
             if (idx === this.tourSteps.length - 1) {
-              this.btnTourNext.textContent = "Finish Tour \u{1F680}";
+              this.btnTourNext.textContent = "Enter Control Room Dashboard \u{1F39B}\uFE0F";
               this.btnTourNext.classList.remove("btn-tour-pulse");
               this.btnTourNext.classList.add("active");
             } else {
@@ -32884,7 +32958,9 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
         }
         endTour() {
           this.isTourActive = false;
+          document.body.classList.remove("tour-mode");
           if (this.tourCard) this.tourCard.style.display = "none";
+          this.enterDashboard();
         }
         openGuide(tabId = "tab-overview") {
           if (this.guideBackdrop) this.guideBackdrop.style.display = "block";
