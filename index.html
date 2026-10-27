@@ -60,6 +60,14 @@
         <span class="pulse-dot"></span>
         <span>AUTOTHERMAL ACTIVE (+4.39 GJ)</span>
       </div>
+      <button id="btn-start-tour" class="btn-ctrl btn-tour-pulse" title="Interactive step-by-step walkthrough">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        Take Guided Tour
+      </button>
+      <button id="btn-open-guide" class="btn-ctrl" title="Open complete project & materials handbook">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Project & Materials Guide
+      </button>
       <button id="btn-download-report" class="btn-ctrl">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Verification Report
@@ -70,6 +78,32 @@
       </button>
     </div>
   </header>
+
+  <!-- Welcome Onboarding Floating Banner -->
+  <div id="welcome-banner" class="glass-panel">
+    <div class="welcome-content">
+      <div class="welcome-badge">
+        <span class="pulse-dot"></span>
+        <span>WELCOME TO CLOSED-LOOP PYROLYSIS</span>
+      </div>
+      <h2 class="welcome-title">Transforming Waste Biomass into Biofuels with Zero External Fuel</h2>
+      <p class="welcome-desc">
+        This interactive 3D digital twin simulates continuous fast pyrolysis coupled with closed-loop byproduct reintegration (Ezekiyas Tsegaye, 2026). Discover how recirculating 800 °C solid ash and syngas deoxygenation creates a completely self-sustaining (+4.39 GJ surplus) biorefinery!
+      </p>
+      <div class="welcome-actions">
+        <button id="btn-welcome-tour" class="btn-ctrl btn-tour-pulse">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          Take the 2-Minute Guided Tour
+        </button>
+        <button id="btn-welcome-guide" class="btn-ctrl">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          System & Materials Guide
+        </button>
+        <button id="btn-welcome-dismiss" class="btn-ctrl btn-ghost">Explore Freely</button>
+      </div>
+    </div>
+    <button id="btn-welcome-close" class="banner-close-btn" aria-label="Close welcome banner">&times;</button>
+  </div>
 
   <!-- Key Performance Indicators (KPI) Top Bar -->
   <div id="kpi-dock">
@@ -286,6 +320,89 @@
     </div>
   </footer>
 
+  <!-- Floating Process Streams & Materials Legend Dock -->
+  <div id="materials-legend" class="glass-panel">
+    <div class="legend-header" id="legend-header-toggle">
+      <div class="legend-title">
+        <span class="legend-icon">⚗️</span>
+        <span>Process Streams & Materials</span>
+      </div>
+      <button id="btn-toggle-legend" class="legend-toggle-btn" title="Toggle Legend">−</button>
+    </div>
+    <div id="legend-body" class="legend-content">
+      <div class="legend-item" data-material="biomass" title="Click to view material details in Handbook">
+        <span class="legend-dot" style="background: #a3e635; box-shadow: 0 0 8px #a3e635;"></span>
+        <div class="legend-info">
+          <span class="legend-name">Biomass Feedstock (1,000 kg/h)</span>
+          <span class="legend-sub">Raw Organic Input · Cellulose, Hemicellulose, Lignin</span>
+        </div>
+      </div>
+      <div class="legend-item" data-material="ash-hot" title="Click to view material details in Handbook">
+        <span class="legend-dot" style="background: #ff5500; box-shadow: 0 0 8px #ff5500;"></span>
+        <div class="legend-info">
+          <span class="legend-name">Hot Ash Heat Carrier (800 °C)</span>
+          <span class="legend-sub">5,940 kg/h · Replaces external fuel tubes</span>
+        </div>
+      </div>
+      <div class="legend-item" data-material="ash-spent" title="Click to view material details in Handbook">
+        <span class="legend-dot" style="background: #ff8800; box-shadow: 0 0 8px #ff8800;"></span>
+        <div class="legend-info">
+          <span class="legend-name">Spent Ash & Char Return</span>
+          <span class="legend-sub">500 °C · Returns to combustor for reheating</span>
+        </div>
+      </div>
+      <div class="legend-item" data-material="vapors" title="Click to view material details in Handbook">
+        <span class="legend-dot" style="background: #fde047; box-shadow: 0 0 8px #fde047;"></span>
+        <div class="legend-info">
+          <span class="legend-name">Pyrolysis Vapors & Intermediates</span>
+          <span class="legend-sub">500 °C · Fast-cracked bio-oil precursors</span>
+        </div>
+      </div>
+      <div class="legend-item" data-material="syngas" title="Click to view material details in Handbook">
+        <span class="legend-dot" style="background: #00f0ff; box-shadow: 0 0 8px #00f0ff;"></span>
+        <div class="legend-info">
+          <span class="legend-name">Recycled Syngas (H₂/CO Rich)</span>
+          <span class="legend-sub">50% HDO Recirculation · In-situ deoxygenation</span>
+        </div>
+      </div>
+      <div class="legend-item" data-material="bio-oil" title="Click to view material details in Handbook">
+        <span class="legend-dot" style="background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+        <div class="legend-info">
+          <span class="legend-name">Upgraded Bio-Oil (23.5% Yield)</span>
+          <span class="legend-sub">Stabilized Liquid Biofuel · High calorific value</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Guided Tour HUD Card -->
+  <div id="tour-card" class="glass-panel" style="display: none;">
+    <div class="tour-progress-bar"><div id="tour-progress-fill" class="tour-progress-fill"></div></div>
+    <div class="tour-card-header">
+      <div class="tour-step-badge" id="tour-step-badge">STEP 1 OF 7 · OVERVIEW</div>
+      <button id="btn-tour-close" class="modal-close-btn" title="Exit Tour">&times;</button>
+    </div>
+    <h3 id="tour-step-title" class="tour-title">Welcome to Closed-Loop Pyrolysis</h3>
+    <div id="tour-step-subtitle" class="tour-subtitle">System Overview & Autothermal Innovation</div>
+    <div id="tour-material-highlight" class="tour-material-badge">
+      <span class="pulse-dot"></span>
+      <span id="tour-material-text">Focus: Closed-Loop Integration</span>
+    </div>
+    <p id="tour-step-content" class="tour-content">
+      Conventional fast pyrolysis burns large amounts of fossil fuel and produces corrosive, acidic crude bio-oil. This digital twin implements Ezekiyas Tsegaye's (2026) framework, reintegrating all process byproducts (solid ash heat, biochar catalyst, and syngas deoxygenation) to achieve autothermal self-sufficiency (+4.39 GJ surplus).
+    </p>
+    <div id="tour-step-tip" class="tour-tip-box">
+      💡 Tip: Follow along as we fly through each stage of the closed loop!
+    </div>
+    <div class="tour-footer">
+      <div class="tour-dots" id="tour-dots"></div>
+      <div class="tour-nav-buttons">
+        <button id="btn-tour-prev" class="btn-ctrl" disabled>&larr; Back</button>
+        <button id="btn-tour-next" class="btn-ctrl btn-tour-pulse">Next Stage &rarr;</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Equipment Inspection Modal Card -->
   <div id="equipment-modal" class="glass-panel">
     <div class="modal-header-row">
@@ -298,8 +415,475 @@
     <p id="modal-desc" style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">
       Fluidized bed fast pyrolysis reactor operating at 500 °C with rapid sensible heat transfer from recirculating solid ash carrier.
     </p>
+
+    <!-- Detailed Materials Flow for this Equipment -->
+    <div id="modal-materials" class="modal-materials-box">
+      <div class="modal-materials-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Materials & Process Role
+      </div>
+      <div id="modal-materials-content" style="font-size: 11px; line-height: 1.45; color: #e2e8f0;">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+
     <div id="modal-formula" class="modal-formula-box">
       <!-- Injected dynamically -->
+    </div>
+
+    <div style="margin-top: 14px; display: flex; justify-content: flex-end; gap: 8px;">
+      <button id="btn-modal-open-guide" class="btn-ctrl" style="font-size: 11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Read Full Materials Guide
+      </button>
+    </div>
+  </div>
+
+  <!-- Full Project & Materials Handbook Modal & Backdrop -->
+  <div id="guide-backdrop" class="modal-backdrop" style="display: none;"></div>
+  <div id="guide-modal" class="glass-panel" style="display: none;">
+    <div class="guide-modal-header">
+      <div class="guide-title-section">
+        <div class="guide-icon-badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <div>
+          <h2 class="guide-modal-title">Closed-Loop Pyrolysis Systems Handbook</h2>
+          <div class="guide-modal-subtitle">Project Purpose · Materials Reference · Navigation · Scientific Framework (Ezekiyas Tsegaye, 2026)</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button id="btn-guide-start-tour" class="btn-ctrl btn-tour-pulse">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          Start 3D Tour
+        </button>
+        <button id="btn-guide-close" class="modal-close-btn" aria-label="Close Handbook">&times;</button>
+      </div>
+    </div>
+
+    <!-- Guide Navigation Tabs -->
+    <div class="guide-nav-tabs">
+      <button class="guide-tab-btn active" data-tab="tab-overview">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        1. Overview & Navigation
+      </button>
+      <button class="guide-tab-btn" data-tab="tab-materials">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><path d="M5.52 16h12.96"/></svg>
+        2. Purpose of Each Material
+      </button>
+      <button class="guide-tab-btn" data-tab="tab-flow">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+        3. Closed Loop & Balances
+      </button>
+      <button class="guide-tab-btn" data-tab="tab-experiments">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        4. Simulator & Experiments
+      </button>
+    </div>
+
+    <!-- Tab 1: Overview & How to Navigate -->
+    <div id="tab-overview" class="guide-tab-pane active">
+      <div class="guide-section">
+        <h3 class="guide-heading">What is this Project?</h3>
+        <p class="guide-text">
+          This website is an interactive <strong>3D Digital Twin and Computational Verification Engine</strong> for a next-generation biorefinery. It implements the mathematical formulations and chemical kinetics published in:
+        </p>
+        <blockquote class="guide-quote">
+          <em>Integrated Theoretical Framework for Byproduct Reintegration in Closed-Loop Pyrolysis Systems</em><br>
+          <strong>Author</strong>: Ezekiyas Tsegaye (2026)
+        </blockquote>
+      </div>
+
+      <div class="guide-grid-2">
+        <div class="guide-card">
+          <div class="guide-card-header text-amber">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            The Problem in Conventional Pyrolysis
+          </div>
+          <p class="guide-text">
+            Traditional fast pyrolysis heats dry biomass (wood, crops) to ~500 °C without oxygen to generate liquid biofuel. However, standard systems suffer from two fatal weaknesses:
+          </p>
+          <ul class="guide-list">
+            <li><strong>Massive External Fuel Waste</strong>: Continuous external natural gas or electric heating is required, severely degrading carbon savings and raising operating costs.</li>
+            <li><strong>Low-Quality Bio-Oil</strong>: Raw crude bio-oil contains corrosive organic acids, heavy polycyclic tars, and reactive oxygen that causes polymer aging and phase separation.</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-header text-emerald">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            The Closed-Loop Breakthrough
+          </div>
+          <p class="guide-text">
+            By reintegrating <strong>all process byproducts</strong> internally, the plant operates with complete self-sufficiency:
+          </p>
+          <ul class="guide-list">
+            <li><strong>Zero External Heating (Autothermal)</strong>: Solid ash carrier reheated to 800 °C recirculates into the reactor, producing <strong>+4,390 MJ/h energy surplus</strong> and reducing auxiliary fuel to <strong>0.0%</strong>.</li>
+            <li><strong>Char-Catalyzed Tar Cracking</strong>: Byproduct biochar loaded with inherent minerals (AAEMs) cracks heavy tars into light distillates.</li>
+            <li><strong>Syngas Hydrodeoxygenation (HDO)</strong>: Recycled H₂/CO syngas deoxygenates vapors in situ, producing stabilized, drop-in bio-oil.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Navigation Guide -->
+      <div class="guide-section" style="margin-top: 18px;">
+        <h3 class="guide-heading">How to Navigate & Explore the 3D World</h3>
+        <div class="guide-controls-grid">
+          <div class="nav-control-box">
+            <div class="nav-control-icon">🖱️</div>
+            <div class="nav-control-title">Rotate View (Orbit)</div>
+            <div class="nav-control-desc">Click &amp; hold <strong>Left Mouse Button</strong>, then drag to spin 360° around the plant. On mobile, use a single finger swipe.</div>
+          </div>
+          <div class="nav-control-box">
+            <div class="nav-control-icon">✋</div>
+            <div class="nav-control-title">Pan Camera</div>
+            <div class="nav-control-desc">Click &amp; hold <strong>Right Mouse Button</strong> (or Shift + Left Click) and drag to translate sideways. On mobile, drag with 2 fingers.</div>
+          </div>
+          <div class="nav-control-box">
+            <div class="nav-control-icon">🔍</div>
+            <div class="nav-control-title">Zoom In &amp; Out</div>
+            <div class="nav-control-desc">Spin the <strong>Mouse Scroll Wheel</strong> (or pinch with 2 fingers on touchscreen) to zoom into pipes, burners, and chambers.</div>
+          </div>
+          <div class="nav-control-box">
+            <div class="nav-control-icon">🎯</div>
+            <div class="nav-control-title">Inspect Any Machine</div>
+            <div class="nav-control-desc"><strong>Click directly</strong> on any 3D piece of equipment to inspect its operating temperature, materials flow, and mathematical formulas.</div>
+          </div>
+        </div>
+
+        <!-- Keyboard Shortcuts Table -->
+        <h4 style="font-size: 12px; color: var(--accent-cyan); margin: 16px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">Keyboard Shortcuts Cheat Sheet</h4>
+        <div class="guide-shortcuts-table">
+          <div class="shortcut-item"><kbd>1</kbd><span>Overview View</span></div>
+          <div class="shortcut-item"><kbd>2</kbd><span>Reactor Core View</span></div>
+          <div class="shortcut-item"><kbd>3</kbd><span>Ash Combustor View</span></div>
+          <div class="shortcut-item"><kbd>4</kbd><span>Biomass Feeder View</span></div>
+          <div class="shortcut-item"><kbd>5</kbd><span>Catalytic Bed View</span></div>
+          <div class="shortcut-item"><kbd>6</kbd><span>Condensers View</span></div>
+          <div class="shortcut-item"><kbd>Space</kbd><span>Pause / Resume</span></div>
+          <div class="shortcut-item"><kbd>T</kbd><span>Start Guided Tour</span></div>
+          <div class="shortcut-item"><kbd>G</kbd><span>Open / Close Guide</span></div>
+          <div class="shortcut-item"><kbd>X</kbd><span>X-Ray / Cutaway</span></div>
+          <div class="shortcut-item"><kbd>M</kbd><span>Thermal Heatmap</span></div>
+          <div class="shortcut-item"><kbd>P</kbd><span>Process Flows</span></div>
+          <div class="shortcut-item"><kbd>R</kbd><span>Reset Simulation</span></div>
+          <div class="shortcut-item"><kbd>Esc</kbd><span>Close Dialogs</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Purpose of Each Material -->
+    <div id="tab-materials" class="guide-tab-pane">
+      <div class="guide-section">
+        <h3 class="guide-heading">Comprehensive Materials & Chemical Streams Guide</h3>
+        <p class="guide-text">
+          In this closed-loop biorefinery, no material is wasted. Every feedstock input, solid carrier, vapor fraction, and byproduct gas is engineered to serve an exact thermodynamic or chemical catalytic purpose:
+        </p>
+      </div>
+
+      <div class="materials-list">
+        <!-- 1. Biomass Feedstock -->
+        <div class="material-card" id="mat-biomass">
+          <div class="material-card-top">
+            <div class="material-badge-pill" style="background: rgba(163, 230, 53, 0.15); border-color: rgba(163, 230, 53, 0.4); color: #a3e635;">
+              <span class="legend-dot" style="background: #a3e635; box-shadow: 0 0 8px #a3e635;"></span>
+              RAW INPUT FEEDSTOCK
+            </div>
+            <div class="material-metric">Baseline: 1,000 kg/h dry basis · T: 25 °C Ambient</div>
+          </div>
+          <h4 class="material-name">1. Biomass Feedstock (Wood Residue & Agricultural Biomass)</h4>
+          <p class="material-desc">
+            <strong>Composition:</strong> High-molecular-weight renewable biopolymers composed of <strong>Cellulose</strong> (~45%), <strong>Hemicellulose</strong> (~30%), and <strong>Lignin</strong> (~25%), with moisture content dried below 10 wt% and ground to particle sizes $d_p \le 2$ mm.
+          </p>
+          <div class="material-role-box">
+            <strong>Chemical & Thermodynamic Purpose:</strong>
+            Biomass is the primary carbon-neutral source of hydrocarbons. When injected into the oxygen-free 500 °C reactor, it undergoes rapid primary thermal cracking under Semyonov kinetic principles:
+            <ul style="margin-top: 4px; padding-left: 18px;">
+              <li><em>Cellulose &amp; Hemicellulose</em> rapidly crack into light volatile oxygenates (forming bio-oil precursors) and non-condensable CO/CO₂ gases.</li>
+              <li><em>Lignin</em> decomposes across a wider temperature range into phenolic oligomers, heavy aromatic tars, and solid biochar.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 2. Solid Ash Heat Carrier -->
+        <div class="material-card" id="mat-ash-hot">
+          <div class="material-card-top">
+            <div class="material-badge-pill" style="background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #ef4444;">
+              <span class="legend-dot" style="background: #ff5500; box-shadow: 0 0 8px #ff5500;"></span>
+              CIRCULATING HEAT CARRIER
+            </div>
+            <div class="material-metric">5,940 kg / 1,000 kg feed · T: 800 °C (Hot) / 500 °C (Spent)</div>
+          </div>
+          <h4 class="material-name">2. Recirculating Solid Ash Heat Carrier</h4>
+          <p class="material-desc">
+            <strong>Composition:</strong> Inert solid inorganic mineral ash and refractory silica carrier with high specific heat capacity ($C_p = 950 \text{ J/(kg}\cdot\text{K)}$).
+          </p>
+          <div class="material-role-box">
+            <strong>Chemical & Thermodynamic Purpose:</strong>
+            The heart of autothermal operation! Instead of burning fossil fuels through metal reactor walls (which causes extreme fouling and low heat transfer), hot ash is heated to 800 °C in the combustor and delivered directly into the reactor bed.
+            <ul style="margin-top: 4px; padding-left: 18px;">
+              <li>Delivers <strong>1.69 GJ/h of direct sensible heat</strong>: $Q_{\text{delivered}} = \dot{m}_{ash} C_{p,ash} (800 - 500) \text{ °C}$.</li>
+              <li>Provides instantaneous conductive heat transfer ($>1000 \text{ °C/s}$) directly to biomass particles, maximizing bio-oil liquid yield.</li>
+              <li>Returns via the lower transfer chute at 500 °C to be reheated by byproduct combustion, forming a continuous closed thermal loop.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 3. Biochar -->
+        <div class="material-card" id="mat-biochar">
+          <div class="material-card-top">
+            <div class="material-badge-pill" style="background: rgba(249, 115, 22, 0.15); border-color: rgba(249, 115, 22, 0.4); color: #f97316;">
+              <span class="legend-dot" style="background: #f97316; box-shadow: 0 0 8px #f97316;"></span>
+              SOLID BYPRODUCT &amp; CATALYST
+            </div>
+            <div class="material-metric">Yield: 22.0% (220 kg/h) · LHV: 22.0 MJ/kg · Active AAEMs</div>
+          </div>
+          <h4 class="material-name">3. Biochar (Solid Carbon &amp; In-Situ Cracking Catalyst)</h4>
+          <p class="material-desc">
+            <strong>Composition:</strong> High-carbon porous solid matrix containing concentrated alkali and alkaline earth metals (<strong>AAEMs</strong>: Potassium, Calcium, Magnesium, Sodium) inherently present in plant ash.
+          </p>
+          <div class="material-role-box">
+            <strong>Chemical & Thermodynamic Purpose:</strong>
+            Serves two high-value closed-loop roles:
+            <ul style="margin-top: 4px; padding-left: 18px;">
+              <li><strong>Combustor Reheating Fuel (70%)</strong>: 154 kg/h of char is combusted in the 800 °C vessel, releasing <strong>3,388 MJ/h of zero-cost thermal energy</strong> to reheat the circulating ash.</li>
+              <li><strong>In-Situ Catalytic Tar Cracker (30%)</strong>: Separated by the primary cyclone and layered in the secondary bed, the hot char's porous surface and AAEMs catalytically break down heavy polycyclic aromatic hydrocarbons into light condensable fuels, lowering oil viscosity and stopping pipe fouling without needing expensive commercial catalysts.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 4. Recycled Syngas -->
+        <div class="material-card" id="mat-syngas">
+          <div class="material-card-top">
+            <div class="material-badge-pill" style="background: rgba(0, 240, 255, 0.15); border-color: rgba(0, 240, 255, 0.4); color: #00f0ff;">
+              <span class="legend-dot" style="background: #00f0ff; box-shadow: 0 0 8px #00f0ff;"></span>
+              REACTIVE ATMOSPHERE &amp; FUEL
+            </div>
+            <div class="material-metric">Recycle Ratio: 0.50 (50%) · LHV: 12.0 MJ/kg · H₂ / CO Rich</div>
+          </div>
+          <h4 class="material-name">4. Non-Condensable Syngas (H₂ / CO Recirculation)</h4>
+          <p class="material-desc">
+            <strong>Composition:</strong> Permanent gases including Hydrogen ($H_2$), Carbon Monoxide ($CO$), Carbon Dioxide ($CO_2$), and light alkanes ($CH_4$).
+          </p>
+          <div class="material-role-box">
+            <strong>Chemical & Thermodynamic Purpose:</strong>
+            <ul style="margin-top: 4px; padding-left: 18px;">
+              <li><strong>Hydrodeoxygenation (HDO) Reactive Atmosphere (50% recycled)</strong>: Pumped into the bottom plenum of the reactor, the $H_2$ and $CO$ create a reducing environment. Active hydrogen species strip reactive oxygen atoms from volatile pyrolysis fragments as water ($H_2O$) and carbon dioxide ($CO_2$). This deoxygenation dramatically improves bio-oil stability, prevents phase aging, and elevates its heating value.</li>
+              <li><strong>Combustor Energy Supplemental (50% excess)</strong>: Excess syngas is routed to the combustor burners to provide clean, high-temperature heat alongside biochar.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 5. Upgraded Bio-Oil -->
+        <div class="material-card" id="mat-bio-oil">
+          <div class="material-card-top">
+            <div class="material-badge-pill" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #10b981;">
+              <span class="legend-dot" style="background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+              PRIMARY LIQUID PRODUCT
+            </div>
+            <div class="material-metric">Yield: 23.5% (235 kg/h) · HHV: ~28 MJ/kg · Stabilized</div>
+          </div>
+          <h4 class="material-name">5. Upgraded Bio-Oil (High-Calorific Liquid Biofuel)</h4>
+          <p class="material-desc">
+            <strong>Composition:</strong> Deoxygenated liquid hydrocarbons, light aromatics, and stabilized phenolic derivatives with significantly reduced moisture and acid content.
+          </p>
+          <div class="material-role-box">
+            <strong>Chemical & Commercial Purpose:</strong>
+            This is the primary commercial product of the plant. Unlike crude bio-oil which degrades within weeks, this upgraded bio-oil is chemically stabilized by in-situ HDO and char catalysis:
+            <ul style="margin-top: 4px; padding-left: 18px;">
+              <li>High Higher Heating Value (HHV ~28 MJ/kg vs crude 16-19 MJ/kg).</li>
+              <li>Low acidity ($pH > 4.5$), low viscosity, and no phase separation during long-term storage.</li>
+              <li>Ready as a drop-in maritime biofuel, industrial heating fuel, or co-refining feedstock for Sustainable Aviation Fuel (SAF).</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 6. Auxiliary Fuel -->
+        <div class="material-card" id="mat-aux-fuel">
+          <div class="material-card-top">
+            <div class="material-badge-pill" style="background: rgba(234, 179, 8, 0.15); border-color: rgba(234, 179, 8, 0.4); color: #eab308;">
+              <span class="legend-dot" style="background: #eab308; box-shadow: 0 0 8px #eab308;"></span>
+              COLD-START SYSTEM ONLY
+            </div>
+            <div class="material-metric">Steady State: 0.0% Throttle · LHV: 46.1 MJ/kg</div>
+          </div>
+          <h4 class="material-name">6. Auxiliary Start-up Fuel (LPG / Trim Fuel)</h4>
+          <p class="material-desc">
+            <strong>Composition:</strong> Liquefied Petroleum Gas ($C_3H_8 / C_4H_{10}$) with high energy density (46.1 MJ/kg).
+          </p>
+          <div class="material-role-box">
+            <strong>Operational Purpose:</strong>
+            Auxiliary fuel is strictly required during the initial <strong>cold-start phase</strong> to preheat the cold ash carrier and refractory liners up to 800 °C.
+            Once the plant produces its own biochar and syngas, the intelligent <strong>Fuzzy Logic + PID supervisory controller</strong> automatically throttles the LPG burner down to <strong>0.0%</strong>. In normal operation, zero fossil fuel is consumed!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: Closed Loop & Balances -->
+    <div id="tab-flow" class="guide-tab-pane">
+      <div class="guide-section">
+        <h3 class="guide-heading">Process Flow Architecture &amp; Mathematical Verification</h3>
+        <p class="guide-text">
+          Below is the complete mass and energy balance confirming the closed-loop autothermal operation derived from Ezekiyas Tsegaye (2026):
+        </p>
+      </div>
+
+      <!-- Flow Architecture Diagram Card -->
+      <div class="guide-card" style="margin-bottom: 16px;">
+        <h4 style="color: var(--accent-cyan); font-size: 13px; margin-bottom: 10px;">Integrated Byproduct Reintegration Loops</h4>
+        <pre class="flow-ascii-box">
+                      [ Raw Biomass Feed: 1,000 kg/h ]
+                                      │
+                                      ▼
++───────────────────────────────────────────────────────────────────────────+
+│                     FLUIDIZED BED FAST PYROLYSIS REACTOR                  │
+│                     Operating Temperature: 500 °C (Nominal)               │
+│                                                                           │
+│   ▲ [ Hot Solid Ash Carrier: 5,940 kg/h @ 800 °C ]                        │
+│   │   (Supplies 1.69 GJ/h Sensible Thermal Energy)                        │
+│   │                                                                       │
+│   ▲ [ Recycled Syngas: 50% HDO Reducing Atmosphere (H₂ / CO) ]            │
++───┼───────────────────────────────────────────────────────────────────────┼
+    │                                 │
+[Spent Ash] (500 °C)          [Pyrolysis Vapors + Char] (500 °C)
+    │                                 │
+    ▼                                 ▼
++──────────────────────+      +─────────────────────────────────────────────+
+│ ASH REHEAT COMBUSTOR │      │ PRIMARY CYCLONE SEPARATOR                   │
+│ Temp: 800 °C         │      │ Efficiency: ≥98.5% Char Recovery            │
+│                      │      +─────────────────────────────────────────────+
+│ Char Combustion (70%)│                      │                       │
+│ Excess Syngas (50%)  │                 [Char: 70%]             [Vapors + 30% Char]
+│ Aux LPG: 0.0%        │                      │                       │
+│                      │                      ▼                       ▼
+│ Net Energy Surplus:  │               To Combustor            +────────────+
+│ +4,390.21 MJ/h       │               (Reheating Heat         │ CATALYTIC  │
+│ (Self-Sustaining!)   │                Carrier)               │ CHAR BED   │
++──────────────────────+                                       │ AAEMs Tars │
+    │                                                          │ Cracking   │
+    └─────────── Reheated Solid Ash Carrier 800 °C ────────────+────────────+
+                                                                      │
+                                                        Upgraded Vapors (<3s)
+                                                                      │
+                                                                      ▼
+                                                      +─────────────────────+
+                                                      │ CONDENSATION TRAIN  │
+                                                      │ Stage 1 + 2 + ESP   │
+                                                      +─────────────────────+
+                                                         │               │
+                                              [Upgraded Bio-Oil]   [Syngas Loop]
+                                              23.5% Yield (235 kg)  50% to Reactor
+                                              HHV: 28 MJ/kg         50% to Combustor
+        </pre>
+      </div>
+
+      <!-- Verification Metrics Table -->
+      <div class="guide-card">
+        <h4 style="color: var(--accent-green); font-size: 13px; margin-bottom: 10px;">Verification Metrics Against Theoretical Paper</h4>
+        <table class="guide-table">
+          <thead>
+            <tr>
+              <th>Metric / Physical Parameter</th>
+              <th>Theoretical Benchmark</th>
+              <th>Simulation Model Output</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Reactor Pyrolysis Temp ($T_{pyro}$)</td>
+              <td>500.0 °C nominal (450 - 550 °C)</td>
+              <td>502.47 °C (±0.5 °C tracking)</td>
+              <td><span class="status-tag status-success">VERIFIED</span></td>
+            </tr>
+            <tr>
+              <td>Solid Ash Carrier Circulation</td>
+              <td>5,940 kg / 1,000 kg Feed @ 800 °C</td>
+              <td>5,940.0 kg/h</td>
+              <td><span class="status-tag status-success">VERIFIED</span></td>
+            </tr>
+            <tr>
+              <td>Autothermal Energy Balance ($Q_{net}$)</td>
+              <td>Positive Surplus (Self-Sustaining)</td>
+              <td>+4,390.21 MJ/h Surplus</td>
+              <td><span class="status-tag status-success">SELF-SUSTAINING</span></td>
+            </tr>
+            <tr>
+              <td>System Overall Thermal Efficiency</td>
+              <td>73.6%</td>
+              <td>73.55%</td>
+              <td><span class="status-tag status-success">VERIFIED</span></td>
+            </tr>
+            <tr>
+              <td>Auxiliary Start-up Trim Fuel</td>
+              <td>0.0% in steady state</td>
+              <td>0.0% (PID throttled)</td>
+              <td><span class="status-tag status-success">ZERO FOSSIL FUEL</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 4: Simulator & Experiments -->
+    <div id="tab-experiments" class="guide-tab-pane">
+      <div class="guide-section">
+        <h3 class="guide-heading">Interactive Simulator Guide &amp; Hands-On Experiments</h3>
+        <p class="guide-text">
+          Use the real-time controls skid on the right side of the screen to interact with the computational solver. Here are four recommended experiments to explore the physical laws governing closed-loop pyrolysis:
+        </p>
+      </div>
+
+      <div class="experiments-grid">
+        <!-- Exp 1 -->
+        <div class="guide-card">
+          <div class="experiment-badge">EXPERIMENT 1</div>
+          <h4 class="experiment-title">Verify Zero-Fuel Autothermal Operation</h4>
+          <p class="guide-text">
+            <strong>Action:</strong> Check the top KPI dock and the control skid.
+          </p>
+          <p class="guide-text">
+            <strong>What to look for:</strong> Notice that <strong>Aux Start-up Fuel is 0.0%</strong> while the <strong>Autothermal Balance shows +4,390 MJ/h</strong>. The energy from combusting 70% of the byproduct char and excess syngas is more than enough to maintain the 800 °C solid carrier loop, proving self-sustaining autothermal operation!
+          </p>
+        </div>
+
+        <!-- Exp 2 -->
+        <div class="guide-card">
+          <div class="experiment-badge">EXPERIMENT 2</div>
+          <h4 class="experiment-title">Disable Char Catalytic Cracking</h4>
+          <p class="guide-text">
+            <strong>Action:</strong> Toggle the <strong>"Char Catalytic Cracking"</strong> switch OFF in the right controls panel.
+          </p>
+          <p class="guide-text">
+            <strong>What to look for:</strong> Watch the <strong>Product Distribution Yields</strong> bars update. Without AAEMs active mineral catalysis in the char bed, heavy polycyclic aromatics cannot be cracked, causing bio-oil recovery to drop and heavy tars to accumulate.
+          </p>
+        </div>
+
+        <!-- Exp 3 -->
+        <div class="guide-card">
+          <div class="experiment-badge">EXPERIMENT 3</div>
+          <h4 class="experiment-title">Scale Feedstock Throughput</h4>
+          <p class="guide-text">
+            <strong>Action:</strong> Drag the <strong>Biomass Feed Basis</strong> slider from 1,000 kg/h up to 2,000 kg/h.
+          </p>
+          <p class="guide-text">
+            <strong>What to look for:</strong> Observe how the <strong>Ash Heat Carrier Flow</strong> immediately increases from 5,940 kg/h to nearly 11,880 kg/h to satisfy the higher endothermic enthalpy demand ($\Delta H = +1.0 \text{ MJ/kg}$). The 3D particle streams also accelerate dynamically to represent higher mass flow!
+          </p>
+        </div>
+
+        <!-- Exp 4 -->
+        <div class="guide-card">
+          <div class="experiment-badge">EXPERIMENT 4</div>
+          <h4 class="experiment-title">Test Manual Burner Override</h4>
+          <p class="guide-text">
+            <strong>Action:</strong> Switch ON the <strong>"Manual Override Control"</strong> toggle.
+          </p>
+          <p class="guide-text">
+            <strong>What to look for:</strong> The automatic Fuzzy Logic + PID supervisory controller is disabled, revealing the <strong>Manual LPG Trim Burner slider</strong>. Drag the slider to 50% and watch the temperature graph spike, or drop it to 0% and test how long the solid ash carrier keeps the reactor steady!
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
