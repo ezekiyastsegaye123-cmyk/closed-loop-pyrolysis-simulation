@@ -591,7 +591,7 @@ export class Plant3DScene {
       });
       const pin = new THREE.Mesh(pinGeo, pinMat);
       pin.position.set(m.pos[0], m.pos[1], m.pos[2]);
-      pin.userData = { id: m.id, label: m.label, isMarker: true };
+      pin.userData = { id: m.id, label: m.label, isMarker: true, baseY: m.pos[1] };
 
       // Inner glowing core
       const coreGeo = new THREE.SphereGeometry(0.2, 12, 12);
@@ -638,12 +638,13 @@ export class Plant3DScene {
       this.burnerMesh.material.emissiveIntensity = 0.1 + (fuelPct / 100.0) * 1.5;
     }
 
-    // Animate pulsing 3D markers
+    // Animate pulsing 3D markers with slower, gentle floating motion
     if (this.markersGroup) {
-      const time = performance.now() * 0.003;
+      const time = performance.now() * 0.001;
       this.markersGroup.children.forEach((marker, idx) => {
-        marker.rotation.y = time + idx;
-        marker.position.y += Math.sin(time * 2 + idx) * 0.003;
+        marker.rotation.y = time * 0.75 + idx;
+        const baseY = (marker.userData && marker.userData.baseY !== undefined) ? marker.userData.baseY : marker.position.y;
+        marker.position.y = baseY + Math.sin(time * 1.5 + idx) * 0.12;
       });
     }
   }

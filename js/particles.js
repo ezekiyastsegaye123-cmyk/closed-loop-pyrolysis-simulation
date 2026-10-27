@@ -78,7 +78,7 @@ export class ProcessParticleStreams {
       new THREE.Vector3(1.8, 9.5, 0.5),
       new THREE.Vector3(0.0, 9.0, 0)
     ]);
-    this.hotAshStream = this.createPathParticles(curve, 180, 0.28, 0xff5500, 0.35, 0.2);
+    this.hotAshStream = this.createPathParticles(curve, 180, 0.28, 0xff5500, 0.16, 0.2);
     this.streams.push(this.hotAshStream);
   }
 
@@ -91,7 +91,7 @@ export class ProcessParticleStreams {
       new THREE.Vector3(7.2, 2.2, -0.5),
       new THREE.Vector3(8.5, 2.5, 0)
     ]);
-    this.spentAshStream = this.createPathParticles(curve, 140, 0.24, 0xff8800, 0.28, 0.18);
+    this.spentAshStream = this.createPathParticles(curve, 140, 0.24, 0xff8800, 0.13, 0.18);
     this.streams.push(this.spentAshStream);
   }
 
@@ -101,7 +101,7 @@ export class ProcessParticleStreams {
       new THREE.Vector3(-6.5, 3.2, 0),
       new THREE.Vector3(-0.2, 3.2, 0)
     );
-    this.biomassStream = this.createPathParticles(curve, 100, 0.22, 0xa3e635, 0.22, 0.15);
+    this.biomassStream = this.createPathParticles(curve, 100, 0.22, 0xa3e635, 0.10, 0.15);
     this.streams.push(this.biomassStream);
   }
 
@@ -119,9 +119,9 @@ export class ProcessParticleStreams {
       pos[i * 3 + 1] = 2.0 + Math.random() * 3.5;
       pos[i * 3 + 2] = Math.sin(angle) * radius;
 
-      vel[i * 3 + 0] = (Math.random() - 0.5) * 0.05;
-      vel[i * 3 + 1] = 0.04 + Math.random() * 0.08;
-      vel[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
+      vel[i * 3 + 0] = (Math.random() - 0.5) * 0.025;
+      vel[i * 3 + 1] = 0.018 + Math.random() * 0.035;
+      vel[i * 3 + 2] = (Math.random() - 0.5) * 0.025;
     }
 
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -146,7 +146,7 @@ export class ProcessParticleStreams {
       new THREE.Vector3(0, 13.0, -3.0),
       new THREE.Vector3(0.8, 11.2, -6.5)
     ]);
-    this.vaporStream = this.createPathParticles(curve, 150, 0.32, 0xfde047, 0.45, 0.25);
+    this.vaporStream = this.createPathParticles(curve, 150, 0.32, 0xfde047, 0.20, 0.25);
     this.streams.push(this.vaporStream);
   }
 
@@ -159,7 +159,7 @@ export class ProcessParticleStreams {
       new THREE.Vector3(-3.0, 0.8, -1.0),
       new THREE.Vector3(0.0, 1.2, 0.0)
     ]);
-    this.syngasStream = this.createPathParticles(curve, 160, 0.25, 0x00f0ff, 0.40, 0.15);
+    this.syngasStream = this.createPathParticles(curve, 160, 0.25, 0x00f0ff, 0.18, 0.15);
     this.streams.push(this.syngasStream);
   }
 
@@ -232,7 +232,7 @@ export class ProcessParticleStreams {
     if (this.bioOilDrips) {
       const dripPos = this.bioOilDrips.geometry.attributes.position.array;
       for (let i = 0; i < 40; i++) {
-        dripPos[i * 3 + 1] -= delta * 4.0;
+        dripPos[i * 3 + 1] -= delta * 1.8;
         if (dripPos[i * 3 + 1] < 1.0) {
           dripPos[i * 3 + 1] = 3.5 + Math.random() * 0.5;
         }

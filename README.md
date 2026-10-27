@@ -84,8 +84,8 @@ Then navigate to: `http://localhost:8000`
 - **Dynamic Process Particle FX**: Real-time particle streams visualizing the recirculating solid heat carrier (ash), biomass injection, fluidized bubbling bed, pyrolysis vapors, syngas recirculation loop, and bio-oil collection.
 - **On-Screen Materials & Process Streams Legend**: Collapsible live legend displaying color-coded streams with direct links to technical material specifications.
 - **Live Engineering HUD & Telemetry**: Real-time temperature pyrometer, chemical yield distribution (bio-oil, biochar, syngas), autothermal energy balance (+4.39 GJ surplus), and system thermal efficiency (73.6%).
-- **Interactive Controls & Experiments**: Modulate biomass feed rate, reactor setpoint temperature, combustor temperature, syngas ratio, and toggle in situ catalytic cracking and automatic vs manual PID+Fuzzy control.
-- **Camera Views & Modes**: Preset camera views, Cutaway / X-Ray transparency mode, and thermal false-color heatmap view.
+- **Interactive Controls & Experiments**: Modulate biomass feed rate, reactor setpoint temperature, combustor temperature, syngas ratio, and toggle in situ catalytic cracking and automatic vs manual PID+Fuzzy control. Includes 0.5x slow-motion mode for granular kinetic observation up to 10x acceleration.
+- **Camera Views & Modes**: Preset camera views with smooth cinematic transition glides, Cutaway / X-Ray transparency mode, and thermal false-color heatmap view.
 - **Keyboard Navigation**: Instant shortcuts (`1`-`6` for camera presets, `Space` to pause/resume, `T` for tour, `G` for guide, `X` for cutaway, `M` for thermal, `P` for particles).
 - **Data Export**: Direct in-browser export to time-series CSV and verification markdown reports.
 

@@ -31061,7 +31061,7 @@ void main() {
             });
             const pin = new Mesh(pinGeo, pinMat);
             pin.position.set(m.pos[0], m.pos[1], m.pos[2]);
-            pin.userData = { id: m.id, label: m.label, isMarker: true };
+            pin.userData = { id: m.id, label: m.label, isMarker: true, baseY: m.pos[1] };
             const coreGeo = new SphereGeometry(0.2, 12, 12);
             const coreMat = new MeshBasicMaterial({ color: 65535 });
             const core = new Mesh(coreGeo, coreMat);
@@ -31094,10 +31094,11 @@ void main() {
             this.burnerMesh.material.emissiveIntensity = 0.1 + fuelPct / 100 * 1.5;
           }
           if (this.markersGroup) {
-            const time = performance.now() * 3e-3;
+            const time = performance.now() * 1e-3;
             this.markersGroup.children.forEach((marker, idx) => {
-              marker.rotation.y = time + idx;
-              marker.position.y += Math.sin(time * 2 + idx) * 3e-3;
+              marker.rotation.y = time * 0.75 + idx;
+              const baseY = marker.userData && marker.userData.baseY !== void 0 ? marker.userData.baseY : marker.position.y;
+              marker.position.y = baseY + Math.sin(time * 1.5 + idx) * 0.12;
             });
           }
         }
@@ -31199,7 +31200,7 @@ void main() {
             new Vector3(1.8, 9.5, 0.5),
             new Vector3(0, 9, 0)
           ]);
-          this.hotAshStream = this.createPathParticles(curve, 180, 0.28, 16733440, 0.35, 0.2);
+          this.hotAshStream = this.createPathParticles(curve, 180, 0.28, 16733440, 0.16, 0.2);
           this.streams.push(this.hotAshStream);
         }
         initSpentAshStream() {
@@ -31210,7 +31211,7 @@ void main() {
             new Vector3(7.2, 2.2, -0.5),
             new Vector3(8.5, 2.5, 0)
           ]);
-          this.spentAshStream = this.createPathParticles(curve, 140, 0.24, 16746496, 0.28, 0.18);
+          this.spentAshStream = this.createPathParticles(curve, 140, 0.24, 16746496, 0.13, 0.18);
           this.streams.push(this.spentAshStream);
         }
         initBiomassFeedStream() {
@@ -31218,7 +31219,7 @@ void main() {
             new Vector3(-6.5, 3.2, 0),
             new Vector3(-0.2, 3.2, 0)
           );
-          this.biomassStream = this.createPathParticles(curve, 100, 0.22, 10741301, 0.22, 0.15);
+          this.biomassStream = this.createPathParticles(curve, 100, 0.22, 10741301, 0.1, 0.15);
           this.streams.push(this.biomassStream);
         }
         initFluidizedBedStream() {
@@ -31232,9 +31233,9 @@ void main() {
             pos[i * 3 + 0] = Math.cos(angle) * radius;
             pos[i * 3 + 1] = 2 + Math.random() * 3.5;
             pos[i * 3 + 2] = Math.sin(angle) * radius;
-            vel[i * 3 + 0] = (Math.random() - 0.5) * 0.05;
-            vel[i * 3 + 1] = 0.04 + Math.random() * 0.08;
-            vel[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
+            vel[i * 3 + 0] = (Math.random() - 0.5) * 0.025;
+            vel[i * 3 + 1] = 0.018 + Math.random() * 0.035;
+            vel[i * 3 + 2] = (Math.random() - 0.5) * 0.025;
           }
           geo.setAttribute("position", new BufferAttribute(pos, 3));
           const mat = new PointsMaterial({
@@ -31255,7 +31256,7 @@ void main() {
             new Vector3(0, 13, -3),
             new Vector3(0.8, 11.2, -6.5)
           ]);
-          this.vaporStream = this.createPathParticles(curve, 150, 0.32, 16638023, 0.45, 0.25);
+          this.vaporStream = this.createPathParticles(curve, 150, 0.32, 16638023, 0.2, 0.25);
           this.streams.push(this.vaporStream);
         }
         initSyngasLoopStream() {
@@ -31266,7 +31267,7 @@ void main() {
             new Vector3(-3, 0.8, -1),
             new Vector3(0, 1.2, 0)
           ]);
-          this.syngasStream = this.createPathParticles(curve, 160, 0.25, 61695, 0.4, 0.15);
+          this.syngasStream = this.createPathParticles(curve, 160, 0.25, 61695, 0.18, 0.15);
           this.streams.push(this.syngasStream);
         }
         initBioOilDripStream() {
@@ -31324,7 +31325,7 @@ void main() {
           if (this.bioOilDrips) {
             const dripPos = this.bioOilDrips.geometry.attributes.position.array;
             for (let i = 0; i < 40; i++) {
-              dripPos[i * 3 + 1] -= delta * 4;
+              dripPos[i * 3 + 1] -= delta * 1.8;
               if (dripPos[i * 3 + 1] < 1) {
                 dripPos[i * 3 + 1] = 3.5 + Math.random() * 0.5;
               }
@@ -32288,7 +32289,7 @@ void main() {
           this.targetCameraPos = null;
           this.targetLookAt = null;
           this.transitioning = false;
-          this.transitionSpeed = 0.06;
+          this.transitionSpeed = 0.025;
           this.viewPresets = {
             overview: { pos: new Vector3(20, 18, 25), target: new Vector3(1, 6, -1) },
             reactor: { pos: new Vector3(5, 9, 8), target: new Vector3(0, 6.5, 0) },
@@ -32301,7 +32302,7 @@ void main() {
         initOrbitControls() {
           this.controls = new OrbitControls(this.camera, this.renderer.domElement);
           this.controls.enableDamping = true;
-          this.controls.dampingFactor = 0.05;
+          this.controls.dampingFactor = 0.04;
           this.controls.minDistance = 4;
           this.controls.maxDistance = 60;
           this.controls.maxPolarAngle = Math.PI / 2 - 0.02;
@@ -32360,7 +32361,7 @@ void main() {
           if (this.transitioning && this.targetCameraPos && this.targetLookAt) {
             this.camera.position.lerp(this.targetCameraPos, this.transitionSpeed);
             this.controls.target.lerp(this.targetLookAt, this.transitionSpeed);
-            if (this.camera.position.distanceTo(this.targetCameraPos) < 0.05 && this.controls.target.distanceTo(this.targetLookAt) < 0.05) {
+            if (this.camera.position.distanceTo(this.targetCameraPos) < 0.02 && this.controls.target.distanceTo(this.targetLookAt) < 0.02) {
               this.camera.position.copy(this.targetCameraPos);
               this.controls.target.copy(this.targetLookAt);
               this.transitioning = false;

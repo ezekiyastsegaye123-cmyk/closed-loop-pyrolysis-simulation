@@ -23,7 +23,8 @@ export class SceneControls {
     this.targetCameraPos = null;
     this.targetLookAt = null;
     this.transitioning = false;
-    this.transitionSpeed = 0.06;
+    // Slower, cinematic camera transitions and smooth damping
+    this.transitionSpeed = 0.025;
 
     this.viewPresets = {
       overview: { pos: new THREE.Vector3(20, 18, 25), target: new THREE.Vector3(1, 6, -1) },
@@ -38,7 +39,7 @@ export class SceneControls {
   initOrbitControls() {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.05;
+    this.controls.dampingFactor = 0.04; // Smooth, gentle inertial decay
     this.controls.minDistance = 4.0;
     this.controls.maxDistance = 60.0;
     this.controls.maxPolarAngle = Math.PI / 2 - 0.02; // Prevent going beneath ground pad
@@ -108,8 +109,8 @@ export class SceneControls {
       this.camera.position.lerp(this.targetCameraPos, this.transitionSpeed);
       this.controls.target.lerp(this.targetLookAt, this.transitionSpeed);
 
-      if (this.camera.position.distanceTo(this.targetCameraPos) < 0.05 &&
-          this.controls.target.distanceTo(this.targetLookAt) < 0.05) {
+      if (this.camera.position.distanceTo(this.targetCameraPos) < 0.02 &&
+          this.controls.target.distanceTo(this.targetLookAt) < 0.02) {
         this.camera.position.copy(this.targetCameraPos);
         this.controls.target.copy(this.targetLookAt);
         this.transitioning = false;
