@@ -78,6 +78,7 @@ python3 -m http.server 8000
 Then navigate to: `http://localhost:8000`
 
 #### 3D Experience Features:
+- **Interactive AI Process Copilot & Consumer Chatbot**: Hybrid AI assistant (built-in offline knowledge engine + optional Vercel Serverless Gemini API) explaining the full process in consumer-friendly analogies with expandable engineering kinetics. Includes interactive 3D camera navigation tags (`Inspect in 3D`), suggested prompt chips, and Web Speech audio narration.
 - **Dedicated Newcomer Landing Page Hero**: Clean, welcoming entry screen featuring key autothermal metrics, concept highlights, and ambient 3D orbit without immediate dashboard clutter.
 - **Progressive "One-by-One" Guided Tour**: 7-stage focused newcomer walkthrough that hides complex HUD sidebars to spotlight each equipment stage sequentially with smooth cinematic camera glides and clear, plain-language explanations.
 - **Focus View vs Full Control Room Mode**: One-click toggle (and `F` key shortcut) to switch between an uncluttered cinematic 3D focus view and the full engineering telemetry control room.
@@ -88,7 +89,7 @@ Then navigate to: `http://localhost:8000`
 - **Live Engineering HUD & Telemetry**: Real-time temperature pyrometer, chemical yield distribution (bio-oil, biochar, syngas), autothermal energy balance (+4.39 GJ surplus), and system thermal efficiency (73.6%).
 - **Interactive Controls & Experiments**: Modulate biomass feed rate, reactor setpoint temperature, combustor temperature, syngas ratio, and toggle in situ catalytic cracking and automatic vs manual PID+Fuzzy control. Includes 0.5x slow-motion mode for granular kinetic observation up to 10x acceleration.
 - **Camera Views & Modes**: Preset camera views with smooth cinematic transition glides, Cutaway / X-Ray transparency mode, and thermal false-color heatmap view.
-- **Keyboard Navigation**: Instant shortcuts (`1`-`6` for camera presets, `Space` to pause/resume, `T` for tour, `F` for focus view, `G` for guide, `X` for cutaway, `M` for thermal, `P` for particles).
+- **Keyboard Navigation**: Instant shortcuts (`1`-`6` for camera presets, `Space` to pause/resume, `T` for tour, `C` for AI Copilot, `F` for focus view, `G` for guide, `X` for cutaway, `M` for thermal, `P` for particles).
 - **Data Export**: Direct in-browser export to time-series CSV and verification markdown reports.
 
 ---

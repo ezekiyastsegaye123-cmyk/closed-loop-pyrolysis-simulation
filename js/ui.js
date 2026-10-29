@@ -395,6 +395,13 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
         this.openGuide('tab-overview');
       });
     }
+    const btnLandingChat = document.getElementById('btn-landing-chat');
+    if (btnLandingChat) {
+      btnLandingChat.addEventListener('click', () => {
+        this.closeLandingOverlay();
+        if (window.chatCopilot) window.chatCopilot.open();
+      });
+    }
     if (this.btnLandingClose) {
       this.btnLandingClose.addEventListener('click', () => {
         this.enterDashboard();
@@ -425,8 +432,12 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
     // Bind Guide Modal Buttons
     const btnOpenGuide = document.getElementById('btn-open-guide');
     const btnModalOpenGuide = document.getElementById('btn-modal-open-guide');
+    const btnOpenChat = document.getElementById('btn-open-chat');
 
     if (btnOpenGuide) btnOpenGuide.addEventListener('click', () => this.openGuide('tab-overview'));
+    if (btnOpenChat) btnOpenChat.addEventListener('click', () => {
+      if (window.chatCopilot) window.chatCopilot.toggle();
+    });
     if (btnModalOpenGuide) btnModalOpenGuide.addEventListener('click', () => {
       if (this.modal) this.modal.classList.remove('open');
       this.openGuide('tab-materials');
