@@ -123,11 +123,13 @@ export class AIChatCopilot {
     this.isOpen = false;
     this.isTTSActive = false;
     this.messages = [];
-    this.synth = window.speechSynthesis || null;
+    this.synth = (typeof window !== 'undefined' && window.speechSynthesis) ? window.speechSynthesis : null;
 
-    this.createDOM();
-    this.bindEvents();
-    this.showWelcomeMessage();
+    if (typeof document !== 'undefined') {
+      this.createDOM();
+      this.bindEvents();
+      this.showWelcomeMessage();
+    }
   }
 
   createDOM() {

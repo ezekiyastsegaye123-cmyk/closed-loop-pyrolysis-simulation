@@ -8,7 +8,9 @@
   },
   "scripts": {
     "build": "esbuild js/main.js --bundle --outfile=dist/app.bundle.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test tests/*.test.js && python3 -m pytest tests/",
+    "test:js": "node --test tests/*.test.js",
+    "test:py": "python3 -m pytest tests/"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/ezekiyastsegaye123-cmyk/closed-loop-pyrolysis-simulation/issues"
   },
