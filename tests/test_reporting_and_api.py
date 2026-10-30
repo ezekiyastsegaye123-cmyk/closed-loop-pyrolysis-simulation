@@ -97,3 +97,54 @@ def test_serve_http_handler_chat_fallback():
     finally:
         if orig_key is not None:
             os.environ["GEMINI_API_KEY"] = orig_key
+
+
+def test_serve_http_handler_status_endpoint():
+    handler = serve.Handler.__new__(serve.Handler)
+    handler.path = "/api/status"
+    handler.wfile = BytesIO()
+    handler.send_response = MagicMock()
+    handler.send_header = MagicMock()
+    handler.end_headers = MagicMock()
+
+    # 1. Without GEMINI_API_KEY
+    orig_key = os.environ.get("GEMINI_API_KEY")
+    if "GEMINI_API_KEY" in os.environ:
+        del os.environ["GEMINI_API_KEY"]
+
+    try:
+        handler.do_GET()
+        res = json.loads(handler.wfile.getvalue().decode("utf-8"))
+        assert res["gemini_connected"] is False
+        assert res["provider"] == "gemini"
+
+        # 2. With GEMINI_API_KEY
+        os.environ["GEMINI_API_KEY"] = "fake_test_key"
+        handler.wfile = BytesIO()
+        handler.do_GET()
+        res2 = json.loads(handler.wfile.getvalue().decode("utf-8"))
+        assert res2["gemini_connected"] is True
+    finally:
+        if orig_key is not None:
+            os.environ["GEMINI_API_KEY"] = orig_key
+        elif "GEMINI_API_KEY" in os.environ:
+            del os.environ["GEMINI_API_KEY"]
+
+
+def test_serve_load_env_files(tmp_path):
+    env_file = tmp_path / ".env"
+    env_file.write_text("TEST_CUSTOM_VAR=loaded_value\n# Comment line\nANOTHER_VAR=\"quoted_val\"\n")
+    
+    orig_dir = serve.DIRECTORY
+    serve.DIRECTORY = str(tmp_path)
+    try:
+        serve.load_env_files()
+        assert os.environ.get("TEST_CUSTOM_VAR") == "loaded_value"
+        assert os.environ.get("ANOTHER_VAR") == "quoted_val"
+    finally:
+        serve.DIRECTORY = orig_dir
+        if "TEST_CUSTOM_VAR" in os.environ:
+            del os.environ["TEST_CUSTOM_VAR"]
+        if "ANOTHER_VAR" in os.environ:
+            del os.environ["ANOTHER_VAR"]
+

@@ -16,6 +16,23 @@ import urllib.error
 PORT = 8080
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
+def load_env_files():
+    """Auto-loads environment variables from .env or .env.local without external dependencies."""
+    for filename in [".env", ".env.local"]:
+        filepath = os.path.join(DIRECTORY, filename)
+        if os.path.exists(filepath):
+            try:
+                with open(filepath, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith("#") and "=" in line:
+                            k, v = line.split("=", 1)
+                            os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+            except Exception as e:
+                print(f"Warning: could not read {filename}: {e}")
+
+load_env_files()
+
 SYSTEM_PROMPT = """You are the AI Process Copilot for the Closed-Loop Pyrolysis 3D Digital Twin, based on the engineering framework by Ezekiyas Tsegaye (2026).
 Explain the closed-loop pyrolysis process to consumers and engineers with clarity, scientific precision, and engaging analogies.
 
@@ -49,6 +66,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
 
+    def do_GET(self):
+        if self.path == "/api/status":
+            has_key = bool(os.environ.get("GEMINI_API_KEY"))
+            self._send_json({"gemini_connected": has_key, "provider": "gemini"})
+            return
+        super().do_GET()
+
     def do_POST(self):
         if self.path == "/api/chat":
             content_length = int(self.headers.get("Content-Length", 0))
@@ -58,10 +82,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             except json.JSONDecodeError:
                 data = {}
 
-            api_key = os.environ.get("GEMINI_API_KEY")
+            api_key = data.get("apiKey") or os.environ.get("GEMINI_API_KEY")
             if not api_key:
                 # Tell client to use built-in offline Knowledge Base
-                self._send_json({"fallback": True, "message": "Local GEMINI_API_KEY not configured. Falling back to built-in knowledge base."})
+                self._send_json({"fallback": True, "message": "No GEMINI_API_KEY configured. Falling back to built-in knowledge base."})
                 return
 
             messages = data.get("messages", [])
@@ -84,7 +108,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             )
 
             try:
-                with urllib.request.urlopen(req, timeout=12) as response:
+                with urllib.request.urlopen(req, timeout=14) as response:
                     res_data = json.loads(response.read().decode("utf-8"))
                     candidates = res_data.get("candidates", [])
                     reply = candidates[0]["content"]["parts"][0]["text"] if candidates else "No response generated."
@@ -112,7 +136,8 @@ def main():
             print("================================================================")
             print("  CLOSED-LOOP PYROLYSIS 3D DIGITAL TWIN SIMULATION")
             print(f"  Opening browser at: {url}")
-            print("  AI Process Copilot API: /api/chat active")
+            key_status = "DETECTED" if os.environ.get("GEMINI_API_KEY") else "NOT CONFIGURED (Offline Mode)"
+            print(f"  AI Process Copilot API: /api/chat active [Gemini Key: {key_status}]")
             print("  Press Ctrl+C to stop the server.")
             print("================================================================")
             try:

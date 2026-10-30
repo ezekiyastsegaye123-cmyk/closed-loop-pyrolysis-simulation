@@ -105,4 +105,40 @@ describe('Vercel Serverless Function /api/chat QA Suite', () => {
       }
     }
   });
+
+  test('POST with req.body.apiKey attempts request with client-supplied key', async () => {
+    const origKey = process.env.GEMINI_API_KEY;
+    delete process.env.GEMINI_API_KEY;
+
+    let statusCode = null;
+    let jsonBody = null;
+    const req = {
+      method: 'POST',
+      body: {
+        apiKey: 'invalid_dummy_key_for_test',
+        messages: [{ role: 'user', content: 'Hello' }]
+      }
+    };
+    const res = {
+      setHeader: () => {},
+      status: (code) => {
+        statusCode = code;
+        return {
+          json: (data) => { jsonBody = data; }
+        };
+      }
+    };
+
+    try {
+      await handler(req, res);
+      // Because key is dummy, Gemini returns 400 or network error, which triggers safe fallback=true
+      assert.strictEqual(statusCode, 200);
+      assert.strictEqual(jsonBody.fallback, true);
+      assert.ok(jsonBody.error || jsonBody.message);
+    } finally {
+      if (origKey !== undefined) {
+        process.env.GEMINI_API_KEY = origKey;
+      }
+    }
+  });
 });

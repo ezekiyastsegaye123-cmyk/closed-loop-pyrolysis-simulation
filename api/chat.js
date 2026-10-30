@@ -53,7 +53,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed. Use POST.' });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = req.body?.apiKey || process.env.GEMINI_API_KEY;
   if (!apiKey) {
     // Graceful fallback trigger: Tells client to use high-fidelity offline knowledge engine
     return res.status(200).json({

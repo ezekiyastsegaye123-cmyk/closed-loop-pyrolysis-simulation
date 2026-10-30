@@ -73,9 +73,19 @@ python3 -m pytest tests/
 ### 4. Running the 3D Interactive Web Simulation
 Launch the high-fidelity 3D Digital Twin experience in your browser:
 ```bash
-python3 -m http.server 8000
+python3 serve.py
 ```
-Then navigate to: `http://localhost:8000`
+Or with Python's basic HTTP server:
+```bash
+python3 -m http.server 8080
+```
+Then navigate to: `http://localhost:8080`
+
+### 5. Connecting Google Gemini AI (Optional)
+The AI Copilot operates 100% offline out-of-the-box using its pre-indexed theoretical knowledge base. To connect live Google Gemini reasoning:
+- **In the UI (Instant)**: Open the AI Copilot (`C` key or bottom-right button), click the ⚙️ Settings icon in the chat header, paste your key from [Google AI Studio](https://aistudio.google.com/app/apikey), and click **Save & Connect**.
+- **Via Local `.env`**: Copy `.env.example` to `.env` and set `GEMINI_API_KEY=your_key_here`. `serve.py` will automatically load it.
+- **On Vercel**: Set `GEMINI_API_KEY` under **Project Settings > Environment Variables**.
 
 #### 3D Experience Features:
 - **Interactive AI Process Copilot & Consumer Chatbot**: Hybrid AI assistant (built-in offline knowledge engine + optional Vercel Serverless Gemini API) explaining the full process in consumer-friendly analogies with expandable engineering kinetics. Includes interactive 3D camera navigation tags (`Inspect in 3D`), suggested prompt chips, and Web Speech audio narration.

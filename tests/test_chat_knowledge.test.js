@@ -76,4 +76,25 @@ describe('Pyrolysis Knowledge Base & Copilot Logic QA Suite', () => {
     assert.ok(html.includes('<li>Zero fossil fuel</li>'));
     assert.ok(html.includes('<ul>'));
   });
+
+  test('ApiKey storage and retrieval works as expected', () => {
+    // Setup mock localStorage in Node test environment
+    const storage = {};
+    global.localStorage = {
+      getItem: (k) => storage[k] || null,
+      setItem: (k, v) => { storage[k] = String(v); },
+      removeItem: (k) => { delete storage[k]; }
+    };
+
+    const copilot = new AIChatCopilot(null, null, null);
+    assert.strictEqual(copilot.getStoredApiKey(), '');
+
+    copilot.setStoredApiKey('AIzaSyExampleKey123');
+    assert.strictEqual(copilot.getStoredApiKey(), 'AIzaSyExampleKey123');
+
+    copilot.setStoredApiKey('');
+    assert.strictEqual(copilot.getStoredApiKey(), '');
+
+    delete global.localStorage;
+  });
 });

@@ -33067,6 +33067,33 @@ $$\\text{Upgraded Bio-oil Yield: } 23.49\\%, \\quad \\text{Thermal Efficiency: }
   };
 
   // js/chat.js
+  var SYSTEM_PROMPT = `
+You are the AI Process Copilot for the Closed-Loop Pyrolysis 3D Digital Twin, based on the engineering framework by Ezekiyas Tsegaye (2026).
+Your job is to explain the closed-loop pyrolysis process to consumers, students, and engineers with clarity, scientific precision, and engaging analogies.
+
+Key System Principles:
+1. Closed-Loop Pyrolysis: Fast pyrolysis without external fossil fuel during steady-state.
+2. Autothermal Balance: Recirculating 800 \xB0C solid ash/char heat carrier (5,940 kg per 1,000 kg dry feed) supplies all endothermic heat, yielding +4,390 MJ/h energy surplus.
+3. Auxiliary Start-Up Fuel: Only used during initial thermal ramp-up, then modulated down to 0%.
+4. Recirculated Syngas HDO: Non-condensable syngas (H2, CO, CH4, CO2) recirculated at a 0.4 - 0.6 ratio into the reactor creates an in-situ hydrodeoxygenation (HDO) atmosphere, stabilizing bio-oil and lowering acid number.
+5. In-Situ Char Catalytic Cracking: AAEMs (alkali and alkaline earth metals: K, Ca, Mg) in the biochar bed catalyze secondary cracking of heavy tar volatiles into light condensables and syngas.
+6. Product Yields: Upgraded Bio-oil (~65 wt%), Biochar (~18 wt%), Non-condensable Syngas (~17 wt%).
+7. Reactor Nominal Conditions: 500 \xB0C operating temperature (allowable 450 - 550 \xB0C), atmospheric pressure (~1.05 bar).
+
+Format Your Responses:
+1. Plain-English Summary: Start with an intuitive, consumer-friendly explanation with everyday analogies.
+2. 3D Navigation Tags: Whenever discussing a major equipment, embed an action tag that the 3D viewer recognizes:
+   - [inspect:reactor] - Fast Pyrolysis Fluidized Bed Reactor
+   - [inspect:combustor] - 800 \xB0C Solid Ash Combustor & Reheater
+   - [inspect:feeder] - Twin Screw Biomass Feeder
+   - [inspect:separation] - Primary Cyclone & Catalytic Char Bed
+   - [inspect:condenser] - Fractional Condensation Train
+3. Deep Dive / Engineering Details: At the bottom of your answer, include an expandable markdown section:
+   <details>
+   <summary>Technical & Kinetic Details</summary>
+   (Include quantitative formulas, Semyonov kinetics, AAEM catalytic mechanisms, mass/energy balance values from the framework).
+   </details>
+`;
   var PYROLYSIS_KNOWLEDGE = [
     {
       id: "closed_loop_concept",
@@ -33185,10 +33212,54 @@ Dual counter-rotating water-cooled screws inject the woodchips directly into the
       this.isTTSActive = false;
       this.messages = [];
       this.synth = typeof window !== "undefined" && window.speechSynthesis ? window.speechSynthesis : null;
+      this.isLLMConnected = false;
       if (typeof document !== "undefined") {
         this.createDOM();
         this.bindEvents();
         this.showWelcomeMessage();
+        this.initConnectionStatus();
+      }
+    }
+    getStoredApiKey() {
+      if (typeof localStorage === "undefined") return "";
+      return localStorage.getItem("pyrolysis_gemini_api_key") || "";
+    }
+    setStoredApiKey(key) {
+      if (typeof localStorage === "undefined") return;
+      if (key) {
+        localStorage.setItem("pyrolysis_gemini_api_key", key.trim());
+      } else {
+        localStorage.removeItem("pyrolysis_gemini_api_key");
+      }
+    }
+    async initConnectionStatus() {
+      const userKey = this.getStoredApiKey();
+      if (userKey) {
+        this.updateStatusBadge(true, "Gemini 1.5 Flash Connected");
+        return;
+      }
+      try {
+        const res = await fetch("/api/status", { method: "GET" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.gemini_connected) {
+            this.updateStatusBadge(true, "Server Gemini LLM Active");
+            return;
+          }
+        }
+      } catch (e) {
+      }
+      this.updateStatusBadge(false, "Offline Knowledge \xB7 Click \u2699\uFE0F to Connect");
+    }
+    updateStatusBadge(isConnected, label) {
+      this.isLLMConnected = isConnected;
+      const dot = this.drawerEl ? this.drawerEl.querySelector(".status-dot") : null;
+      const text = this.drawerEl ? this.drawerEl.querySelector("#ai-status-text") : null;
+      if (dot) {
+        dot.className = `status-dot ${isConnected ? "online" : "offline"}`;
+      }
+      if (text) {
+        text.textContent = label;
       }
     }
     createDOM() {
@@ -33224,12 +33295,18 @@ Dual counter-rotating water-cooled screws inject the woodchips directly into the
           <div>
             <div class="ai-chat-title">Pyrolysis AI Copilot</div>
             <div class="ai-chat-status">
-              <span class="status-dot online"></span>
-              <span id="ai-status-text">Autonomous Knowledge Engine</span>
+              <span class="status-dot offline"></span>
+              <span id="ai-status-text">Offline Knowledge \xB7 Click \u2699\uFE0F to Connect</span>
             </div>
           </div>
         </div>
         <div class="ai-chat-actions">
+          <button id="ai-settings-toggle" class="ai-btn-icon" title="Connect Google Gemini API Key" aria-label="Settings">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </button>
           <button id="ai-tts-toggle" class="ai-btn-icon" title="Toggle Audio Narration" aria-label="Toggle Audio Narration">
             <svg id="tts-icon-muted" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M11 5L6 9H2v6h4l5 4V5z"/>
@@ -33256,6 +33333,32 @@ Dual counter-rotating water-cooled screws inject the woodchips directly into the
         </div>
       </div>
 
+      <!-- Settings Panel Dropdown -->
+      <div class="ai-settings-panel" id="ai-settings-panel" style="display:none;">
+        <div class="ai-settings-header">
+          <div class="ai-settings-title">\u2699\uFE0F Connect Google Gemini AI</div>
+          <button id="ai-settings-close-btn" class="ai-btn-icon" title="Close Settings">&times;</button>
+        </div>
+        <div class="ai-settings-body">
+          <p class="ai-settings-desc">
+            Connect your Google Gemini API key to activate live reasoning, natural conversational answers, and deep pyrolysis modeling.
+          </p>
+          <div class="ai-settings-field">
+            <label for="ai-gemini-key-input">Gemini API Key:</label>
+            <input type="password" id="ai-gemini-key-input" placeholder="AIzaSy..." spellcheck="false" autocomplete="off" />
+          </div>
+          <div class="ai-settings-actions">
+            <button id="ai-key-save-btn" class="ai-action-btn primary">Save & Connect</button>
+            <button id="ai-key-clear-btn" class="ai-action-btn secondary">Remove Key</button>
+          </div>
+          <div id="ai-key-feedback" class="ai-key-feedback"></div>
+          <div class="ai-settings-help">
+            <span>Free API Key: </span>
+            <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Get a free key from Google AI Studio &rarr;</a>
+          </div>
+        </div>
+      </div>
+
       <div class="ai-suggested-prompts-container" id="ai-suggested-prompts">
         <div class="prompt-chip" data-query="How does closed-loop pyrolysis work?">\u{1F504} What is closed loop?</div>
         <div class="prompt-chip" data-query="Where does the 800\xB0C heat carrier come from?">\u{1F525} 800\xB0C Heat Carrier</div>
@@ -33277,7 +33380,7 @@ Dual counter-rotating water-cooled screws inject the woodchips directly into the
         </button>
       </div>
       <div class="ai-chat-footer-note">
-        Powered by Ezekiyas Tsegaye (2026) Theoretical Framework \xB7 Hybrid Gemini AI
+        Powered by Ezekiyas Tsegaye (2026) Theoretical Framework \xB7 Gemini AI Copilot
       </div>
     `;
       document.body.appendChild(drawer);
@@ -33288,11 +33391,22 @@ Dual counter-rotating water-cooled screws inject the woodchips directly into the
       this.ttsBtn = drawer.querySelector("#ai-tts-toggle");
       this.ttsMutedIcon = drawer.querySelector("#tts-icon-muted");
       this.ttsActiveIcon = drawer.querySelector("#tts-icon-active");
+      this.settingsPanel = drawer.querySelector("#ai-settings-panel");
+      this.settingsToggleBtn = drawer.querySelector("#ai-settings-toggle");
+      this.settingsCloseBtn = drawer.querySelector("#ai-settings-close-btn");
+      this.keyInput = drawer.querySelector("#ai-gemini-key-input");
+      this.saveKeyBtn = drawer.querySelector("#ai-key-save-btn");
+      this.clearKeyBtn = drawer.querySelector("#ai-key-clear-btn");
+      this.keyFeedback = drawer.querySelector("#ai-key-feedback");
     }
     bindEvents() {
       this.launcherEl.addEventListener("click", () => this.toggle());
       this.drawerEl.querySelector("#ai-chat-close").addEventListener("click", () => this.close());
       this.drawerEl.querySelector("#ai-chat-clear").addEventListener("click", () => this.clearChat());
+      this.settingsToggleBtn.addEventListener("click", () => this.toggleSettings());
+      this.settingsCloseBtn.addEventListener("click", () => this.closeSettings());
+      this.saveKeyBtn.addEventListener("click", () => this.handleSaveApiKey());
+      this.clearKeyBtn.addEventListener("click", () => this.handleClearApiKey());
       this.sendBtn.addEventListener("click", () => this.handleUserSubmit());
       this.inputEl.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -33321,9 +33435,106 @@ Dual counter-rotating water-cooled screws inject the woodchips directly into the
           this.toggle();
         }
         if (e.key === "Escape" && this.isOpen) {
-          this.close();
+          if (this.settingsPanel && this.settingsPanel.style.display !== "none") {
+            this.closeSettings();
+          } else {
+            this.close();
+          }
         }
       });
+    }
+    toggleSettings() {
+      const isVisible = this.settingsPanel.style.display !== "none";
+      if (isVisible) {
+        this.closeSettings();
+      } else {
+        this.openSettings();
+      }
+    }
+    openSettings() {
+      this.settingsPanel.style.display = "block";
+      const stored = this.getStoredApiKey();
+      if (stored) {
+        this.keyInput.value = stored;
+        this.keyFeedback.textContent = "\u2713 Active Gemini API Key configured in your browser.";
+        this.keyFeedback.className = "ai-key-feedback success";
+      } else {
+        this.keyInput.value = "";
+        this.keyFeedback.textContent = "No personal key saved. Currently using offline knowledge engine.";
+        this.keyFeedback.className = "ai-key-feedback";
+      }
+    }
+    closeSettings() {
+      this.settingsPanel.style.display = "none";
+    }
+    async handleSaveApiKey() {
+      const key = this.keyInput.value.trim();
+      if (!key) {
+        this.keyFeedback.textContent = "Please enter a valid Gemini API key.";
+        this.keyFeedback.className = "ai-key-feedback error";
+        return;
+      }
+      this.keyFeedback.textContent = "Validating key with Gemini API...";
+      this.keyFeedback.className = "ai-key-feedback";
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ role: "user", parts: [{ text: "Hello, confirm connection." }] }],
+            generationConfig: { maxOutputTokens: 10 }
+          })
+        });
+        if (res.ok) {
+          this.setStoredApiKey(key);
+          this.updateStatusBadge(true, "Gemini 1.5 Flash Connected");
+          this.keyFeedback.textContent = "\u2713 Successfully connected to Google Gemini!";
+          this.keyFeedback.className = "ai-key-feedback success";
+          setTimeout(() => this.closeSettings(), 1200);
+        } else {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error?.message || `HTTP ${res.status}`);
+        }
+      } catch (err) {
+        this.keyFeedback.textContent = `Connection failed: ${err.message}`;
+        this.keyFeedback.className = "ai-key-feedback error";
+      }
+    }
+    handleClearApiKey() {
+      this.setStoredApiKey("");
+      this.keyInput.value = "";
+      this.updateStatusBadge(false, "Offline Knowledge \xB7 Click \u2699\uFE0F to Connect");
+      this.keyFeedback.textContent = "Key removed. Copilot reverted to offline knowledge mode.";
+      this.keyFeedback.className = "ai-key-feedback";
+    }
+    async callGeminiDirect(apiKey, messages) {
+      const contents = messages.map((m) => ({
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [{ text: m.content }]
+      }));
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+      const payload = {
+        system_instruction: {
+          parts: [{ text: SYSTEM_PROMPT }]
+        },
+        contents,
+        generationConfig: {
+          temperature: 0.6,
+          maxOutputTokens: 1024
+        }
+      };
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error?.message || `Gemini API error ${res.status}`);
+      }
+      const data = await res.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || null;
     }
     toggle() {
       if (this.isOpen) {
@@ -33377,7 +33588,7 @@ Dual counter-rotating water-cooled screws inject the woodchips directly into the
     showWelcomeMessage() {
       const welcomeHtml = `
       <p>Hello! I am your <strong>Closed-Loop Pyrolysis AI Copilot</strong>.</p>
-      <p>I can explain the full conversion cycle, from the raw biomass injection to the <strong>800 \xB0C recirculating ash loop</strong> and <strong>hydrogen syngas deoxygenation</strong>.</p>
+      <p>I can explain the full conversion cycle, from raw biomass injection to the <strong>800 \xB0C recirculating ash loop</strong> and <strong>hydrogen syngas deoxygenation</strong>.</p>
       <p>You can click any suggested question above or type your own. When I mention a machine, look for the 3D inspection badge to fly right to it!</p>
     `;
       this.appendMessage("assistant", welcomeHtml, null);
@@ -33393,30 +33604,49 @@ Dual counter-rotating water-cooled screws inject the woodchips directly into the
       try {
         let responseText = null;
         let usedFallback = false;
-        try {
-          const res = await fetch("/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages: this.messages })
-          });
-          if (res.ok) {
-            const data = await res.json();
-            if (data && !data.fallback && data.reply) {
-              responseText = data.reply;
+        const userKey = this.getStoredApiKey();
+        if (userKey) {
+          try {
+            responseText = await this.callGeminiDirect(userKey, this.messages);
+          } catch (apiErr) {
+            console.warn("Direct Gemini call failed:", apiErr);
+            usedFallback = true;
+          }
+        }
+        if (!responseText) {
+          try {
+            const res = await fetch("/api/chat", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ messages: this.messages, apiKey: userKey || void 0 })
+            });
+            if (res.ok) {
+              const data = await res.json();
+              if (data && !data.fallback && data.reply) {
+                responseText = data.reply;
+              } else {
+                usedFallback = true;
+              }
             } else {
               usedFallback = true;
             }
-          } else {
+          } catch (networkErr) {
             usedFallback = true;
           }
-        } catch (networkErr) {
-          usedFallback = true;
         }
         let equipmentId = null;
         if (usedFallback || !responseText) {
           const localMatch = this.queryLocalKnowledge(text);
           responseText = localMatch.html;
           equipmentId = localMatch.equipment;
+          if (!this.isLLMConnected) {
+            responseText += `
+            <div class="ai-offline-hint">
+              <span>\u26A1 Answered via built-in knowledge base. </span>
+              <button class="ai-hint-link" id="btn-hint-connect">Connect free Gemini API key &rarr;</button>
+            </div>
+          `;
+          }
         }
         typingIndicator.remove();
         const formatted = this.formatAssistantResponse(responseText, equipmentId);
@@ -33552,7 +33782,7 @@ Dual counter-rotating water-cooled screws inject the woodchips directly into the
       <div class="typing-dots">
         <span></span><span></span><span></span>
       </div>
-      <span class="typing-label">Analyzing process dynamics...</span>
+      <span class="typing-label">Consulting process dynamics...</span>
     `;
       this.messagesContainer.appendChild(el);
       this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
@@ -33573,6 +33803,10 @@ Dual counter-rotating water-cooled screws inject the woodchips directly into the
           }
         });
       });
+      const hintConnectBtn = bubble.querySelector("#btn-hint-connect");
+      if (hintConnectBtn) {
+        hintConnectBtn.addEventListener("click", () => this.openSettings());
+      }
       this.messagesContainer.appendChild(bubble);
       this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
       if (role === "assistant" && targetUnit && this.controls && this.controls.setPreset) {
