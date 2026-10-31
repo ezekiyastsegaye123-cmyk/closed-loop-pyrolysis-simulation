@@ -148,3 +148,37 @@ def test_serve_load_env_files(tmp_path):
         if "ANOTHER_VAR" in os.environ:
             del os.environ["ANOTHER_VAR"]
 
+
+def test_serve_http_handler_chat_with_telemetry():
+    handler = serve.Handler.__new__(serve.Handler)
+    handler.path = "/api/chat"
+    body_data = json.dumps({
+        "messages": [{"role": "user", "content": "How is the reactor?"}],
+        "telemetry": {
+            "tempC": 502.5,
+            "targetTempC": 500.0,
+            "combustorTempC": 800.0,
+            "feedRateKgHr": 1000.0,
+            "autothermalMarginMJ": 4390.2,
+            "isAutothermal": True
+        }
+    }).encode("utf-8")
+    handler.headers = {"Content-Length": str(len(body_data))}
+    handler.rfile = BytesIO(body_data)
+    handler.wfile = BytesIO()
+    handler.send_response = MagicMock()
+    handler.send_header = MagicMock()
+    handler.end_headers = MagicMock()
+
+    orig_key = os.environ.get("GEMINI_API_KEY")
+    if "GEMINI_API_KEY" in os.environ:
+        del os.environ["GEMINI_API_KEY"]
+    try:
+        handler.do_POST()
+        res = json.loads(handler.wfile.getvalue().decode("utf-8"))
+        assert res["fallback"] is True
+    finally:
+        if orig_key is not None:
+            os.environ["GEMINI_API_KEY"] = orig_key
+
+

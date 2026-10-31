@@ -141,4 +141,44 @@ describe('Vercel Serverless Function /api/chat QA Suite', () => {
       }
     }
   });
+
+  test('POST with req.body.telemetry is processed cleanly', async () => {
+    let statusCode = null;
+    let jsonBody = null;
+    const req = {
+      method: 'POST',
+      body: {
+        messages: [{ role: 'user', content: 'What is the current temperature?' }],
+        telemetry: {
+          tempC: 502.5,
+          targetTempC: 500.0,
+          combustorTempC: 800.0,
+          feedRateKgHr: 1000.0,
+          autothermalMarginMJ: 4390.2,
+          isAutothermal: true
+        }
+      }
+    };
+    const res = {
+      setHeader: () => {},
+      status: (code) => {
+        statusCode = code;
+        return {
+          json: (data) => { jsonBody = data; }
+        };
+      }
+    };
+
+    const origKey = process.env.GEMINI_API_KEY;
+    delete process.env.GEMINI_API_KEY;
+    try {
+      await handler(req, res);
+      assert.strictEqual(statusCode, 200);
+      assert.strictEqual(jsonBody.fallback, true);
+    } finally {
+      if (origKey !== undefined) {
+        process.env.GEMINI_API_KEY = origKey;
+      }
+    }
+  });
 });
