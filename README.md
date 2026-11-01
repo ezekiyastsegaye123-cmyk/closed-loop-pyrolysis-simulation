@@ -73,22 +73,11 @@ python3 -m pytest tests/
 ### 4. Running the 3D Interactive Web Simulation
 Launch the high-fidelity 3D Digital Twin experience in your browser:
 ```bash
-python3 serve.py
+python3 -m http.server 8000
 ```
-Or with Python's basic HTTP server:
-```bash
-python3 -m http.server 8080
-```
-Then navigate to: `http://localhost:8080`
-
-### 5. Connecting Google Gemini AI (Optional)
-The AI Copilot operates 100% offline out-of-the-box using its pre-indexed theoretical knowledge base. To connect live Google Gemini reasoning:
-- **In the UI (Instant)**: Open the AI Copilot (`C` key or bottom-right button), click the ⚙️ Settings icon in the chat header, paste your key from [Google AI Studio](https://aistudio.google.com/app/apikey), and click **Save & Connect**.
-- **Via Local `.env`**: Copy `.env.example` to `.env` and set `GEMINI_API_KEY=your_key_here`. `serve.py` will automatically load it.
-- **On Vercel**: Set `GEMINI_API_KEY` under **Project Settings > Environment Variables**.
+Then navigate to: `http://localhost:8000`
 
 #### 3D Experience Features:
-- **Interactive AI Process Copilot & Consumer Chatbot**: Hybrid AI assistant (built-in offline knowledge engine + optional Vercel Serverless Gemini API) explaining the full process in consumer-friendly analogies with expandable engineering kinetics. Includes interactive 3D camera navigation tags (`Inspect in 3D`), suggested prompt chips, and Web Speech audio narration.
 - **Dedicated Newcomer Landing Page Hero**: Clean, welcoming entry screen featuring key autothermal metrics, concept highlights, and ambient 3D orbit without immediate dashboard clutter.
 - **Progressive "One-by-One" Guided Tour**: 7-stage focused newcomer walkthrough that hides complex HUD sidebars to spotlight each equipment stage sequentially with smooth cinematic camera glides and clear, plain-language explanations.
 - **Focus View vs Full Control Room Mode**: One-click toggle (and `F` key shortcut) to switch between an uncluttered cinematic 3D focus view and the full engineering telemetry control room.
@@ -99,7 +88,7 @@ The AI Copilot operates 100% offline out-of-the-box using its pre-indexed theore
 - **Live Engineering HUD & Telemetry**: Real-time temperature pyrometer, chemical yield distribution (bio-oil, biochar, syngas), autothermal energy balance (+4.39 GJ surplus), and system thermal efficiency (73.6%).
 - **Interactive Controls & Experiments**: Modulate biomass feed rate, reactor setpoint temperature, combustor temperature, syngas ratio, and toggle in situ catalytic cracking and automatic vs manual PID+Fuzzy control. Includes 0.5x slow-motion mode for granular kinetic observation up to 10x acceleration.
 - **Camera Views & Modes**: Preset camera views with smooth cinematic transition glides, Cutaway / X-Ray transparency mode, and thermal false-color heatmap view.
-- **Keyboard Navigation**: Instant shortcuts (`1`-`6` for camera presets, `Space` to pause/resume, `T` for tour, `C` for AI Copilot, `F` for focus view, `G` for guide, `X` for cutaway, `M` for thermal, `P` for particles).
+- **Keyboard Navigation**: Instant shortcuts (`1`-`6` for camera presets, `Space` to pause/resume, `T` for tour, `F` for focus view, `G` for guide, `X` for cutaway, `M` for thermal, `P` for particles).
 - **Data Export**: Direct in-browser export to time-series CSV and verification markdown reports.
 
 ---

@@ -12,7 +12,6 @@ import { Plant3DScene } from './scene.js';
 import { ProcessParticleStreams } from './particles.js';
 import { SceneControls } from './controls.js';
 import { DashboardUI } from './ui.js';
-import { AIChatCopilot } from './chat.js';
 
 // Global execution state
 window.simulationRunning = true;
@@ -106,10 +105,6 @@ class PyrolysisWebExperienceApp {
 
     // 6. UI Dashboard
     this.ui = new DashboardUI(this.sim, this.plantScene, this.controls);
-
-    // 7. AI Process Copilot & Consumer Chatbot
-    this.chatCopilot = new AIChatCopilot(this.controls, this.plantScene, this.sim);
-    window.chatCopilot = this.chatCopilot;
 
     this.updateLoader(100, 'System Online: Ready');
 
